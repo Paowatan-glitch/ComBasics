@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComBasics - ความรู้เบื้องต้นเกี่ยวกับคอมพิวเตอร์</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Prompt & Sarabun for Multi-lang) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Sarabun:wght@400;600&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Prompt', 'Sarabun', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Specific fonts for specific languages */
+        body.lang-jp { font-family: 'Noto Sans JP', sans-serif; }
+        body.lang-cn { font-family: 'Noto Sans SC', sans-serif; }
+        body.lang-hi { font-family: 'Noto Sans Devanagari', sans-serif; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .filter-btn.active {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        .item-image {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+        /* Hamburger Animation */
+        .hamburger-line {
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+        .hamburger-active .line-1 {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-active .line-2 {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        .hamburger-active .line-3 {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="text-slate-800 transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center cursor-pointer mr-4" onclick="navigateTo('home')">
+                        <i class="fa-solid fa-laptop-code text-blue-600 text-2xl mr-2"></i>
+                        <span class="font-bold text-xl text-gray-800">ComBasics</span>
+                    </div>
+                    
+                    <!-- Language Selector -->
+                    <div class="relative group">
+                        <select id="language-selector" onchange="changeLanguage(this.value)" class="appearance-none bg-blue-50 border border-blue-200 text-blue-800 text-sm font-medium py-1 px-3 pr-8 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:bg-blue-100 transition">
+                            <option value="th">🇹🇭 ไทย</option>
+                            <option value="en">🇺🇸 ENG</option>
+                            <option value="jp">🇯🇵 日本語</option>
+                            <option value="cn">🇨🇳 中文</option>
+                            <option value="ru">🇷🇺 Русский</option>
+                            <option value="hi">🇮🇳 हिन्दी</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-600">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="navigateTo('home')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_home">หน้าแรก</button>
+                    <button onclick="navigateTo('whatis')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_whatis">คืออะไร?</button>
+                    <button onclick="navigateTo('hardware')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_hardware">ฮาร์ดแวร์</button>
+                    <button onclick="navigateTo('software')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_software">ซอฟต์แวร์</button>
+                    <button onclick="navigateTo('troubleshoot')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_troubleshoot">แก้ปัญหา</button>
+                    <button onclick="navigateTo('shortcuts')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_shortcuts">คีย์ลัด</button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="hamburger-btn" onclick="toggleMenu()" class="w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span class="hamburger-line line-1 block w-6 h-0.5 bg-gray-800 rounded-full"></span>
+                        <span class="hamburger-line line-2 block w-6 h-0.5 bg-gray-800 rounded-full"></span>
+                        <span class="hamburger-line line-3 block w-6 h-0.5 bg-gray-800 rounded-full"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t p-4 shadow-lg absolute w-full left-0 bg-opacity-95 backdrop-blur-sm h-screen z-40 top-16">
+            <div class="flex flex-col space-y-2">
+                <button onclick="navigateTo('home')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_home">หน้าแรก</button>
+                <button onclick="navigateTo('whatis')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_whatis">คืออะไร?</button>
+                <button onclick="navigateTo('hardware')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_hardware">ฮาร์ดแวร์</button>
+                <button onclick="navigateTo('software')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_software">ซอฟต์แวร์</button>
+                <button onclick="navigateTo('troubleshoot')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_troubleshoot">แก้ปัญหา</button>
+                <button onclick="navigateTo('shortcuts')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_shortcuts">คีย์ลัด</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT CONTAINER -->
+    <div class="pt-16 min-h-screen flex flex-col">
+
+        <!-- PAGE 1: HOME -->
+        <section id="home" class="page-section active flex-col gradient-bg text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-20">
+                <div class="flex flex-col md:flex-row items-center min-h-[60vh]">
+                    <div class="md:w-1/2 mb-10 md:mb-0">
+                        <span class="bg-blue-500 bg-opacity-30 text-blue-50 px-4 py-1 rounded-full text-sm font-semibold mb-4 inline-block backdrop-blur-sm animate-pulse" data-i18n="hero_badge">✨ แหล่งเรียนรู้สำหรับมือใหม่</span>
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-md" data-i18n="hero_title">คอมพิวเตอร์<br>เรื่องง่ายกว่าที่คิด</h1>
+                        <p class="text-blue-100 text-lg mb-8 max-w-lg leading-relaxed" data-i18n="hero_desc">
+                            เรียนรู้ส่วนประกอบ การทำงาน และเคล็ดลับการใช้งานคอมพิวเตอร์พื้นฐาน ครบจบในที่เดียว เข้าใจง่าย ใช้ได้จริง
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="document.getElementById('site-contents').scrollIntoView({behavior: 'smooth'})" class="bg-white text-blue-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 flex items-center justify-center group">
+                                <span data-i18n="btn_view_content">ดูเนื้อหาทั้งหมด</span> <i class="fa-solid fa-arrow-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center relative">
+                        <div class="absolute inset-0 bg-blue-400 rounded-full opacity-20 filter blur-3xl animate-pulse"></div>
+                        <i class="fa-solid fa-computer text-[150px] md:text-[250px] text-white drop-shadow-2xl relative z-10 transform hover:scale-105 transition duration-500"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Contents Preview -->
+            <div id="site-contents" class="bg-white text-slate-800 py-16 rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] relative z-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2" data-i18n="content_title">ในเว็บไซต์นี้มีอะไรบ้าง?</h2>
+                        <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full mb-4"></div>
+                        <p class="text-gray-600" data-i18n="content_subtitle">เลือกหัวข้อที่คุณสนใจเพื่อเริ่มเรียนรู้ได้เลย</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div onclick="navigateTo('whatis')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fa-solid fa-circle-question"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card1_title">1. คอมพิวเตอร์คืออะไร?</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card1_desc">ปูพื้นฐานความเข้าใจว่าคอมพิวเตอร์ทำงานอย่างไร</p>
+                        </div>
+                        <div onclick="navigateTo('hardware')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-purple-600 group-hover:text-white transition-colors"><i class="fa-solid fa-microchip"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card2_title">2. รู้จักฮาร์ดแวร์</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card2_desc">เจาะลึกอุปกรณ์ที่จับต้องได้ เช่น CPU, RAM</p>
+                        </div>
+                        <div onclick="navigateTo('software')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-green-600 group-hover:text-white transition-colors"><i class="fa-brands fa-windows"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card3_title">3. โลกของซอฟต์แวร์</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card3_desc">แยกแยะประเภทโปรแกรมต่างๆ และระบบปฏิบัติการ</p>
+                        </div>
+                        <div onclick="navigateTo('troubleshoot')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card4_title">4. แก้ปัญหา & เทคนิค</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card4_desc">วิธีแก้ปัญหาคอมฯ เบื้องต้นและคีย์ลัด</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: WHAT IS -->
+        <section id="whatis" class="page-section bg-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-i18n="whatis_title">คอมพิวเตอร์ทำงานอย่างไร?</h2>
+                    <div class="w-24 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+                    <p class="mt-6 text-gray-600 max-w-2xl mx-auto text-lg" data-i18n="whatis_subtitle">หลักการทำงานของคอมพิวเตอร์แบ่งออกเป็น 3 ขั้นตอนหลัก</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-center">
+                        <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fa-solid fa-keyboard"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800" data-i18n="step1_title">1. รับข้อมูล (Input)</h3>
+                        <p class="text-gray-500" data-i18n="step1_desc">รับคำสั่งผ่านอุปกรณ์ เช่น คีย์บอร์ด เมาส์</p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-center">
+                        <div class="w-20 h-20 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fa-solid fa-microchip"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800" data-i18n="step2_title">2. ประมวลผล (Process)</h3>
+                        <p class="text-gray-500" data-i18n="step2_desc">CPU คิดคำนวณตามคำสั่ง</p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-center">
+                        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fa-solid fa-desktop"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800" data-i18n="step3_title">3. แสดงผล (Output)</h3>
+                        <p class="text-gray-500" data-i18n="step3_desc">แสดงผลลัพธ์ผ่านหน้าจอ</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: HARDWARE -->
+        <section id="hardware" class="page-section bg-slate-50 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-i18n="hardware_title">ฮาร์ดแวร์ (Hardware)</h2>
+                    <p class="text-gray-600 text-lg" data-i18n="hardware_subtitle">อุปกรณ์ที่จับต้องได้ แบ่งตามหน้าที่การทำงาน</p>
+                </div>
+                <!-- Tabs -->
+                <div class="flex flex-wrap justify-center gap-4 mb-10">
+                    <button onclick="filterItems('hw-grid', 'all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_all">ทั้งหมด</button>
+                    <button onclick="filterItems('hw-grid', 'process')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_process">ประมวลผล</button>
+                    <button onclick="filterItems('hw-grid', 'memory')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_memory">ความจำ</button>
+                    <button onclick="filterItems('hw-grid', 'peripheral')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_peripheral">อุปกรณ์ต่อพ่วง</button>
+                    <button onclick="filterItems('hw-grid', 'accessory')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_accessory">อุปกรณ์เสริม</button>
+                </div>
+                <!-- Hardware Grid -->
+                <div id="hw-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Process -->
+                    <div data-category="process" onclick="showInfo('cpu')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/e0f2fe/0369a1?text=CPU" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">CPU</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_cpu_short">สมองของคอมพิวเตอร์</p></div>
+                    </div>
+                    <div data-category="process" onclick="showInfo('mainboard')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/f3e8ff/7e22ce?text=Mainboard" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">Mainboard</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_mb_short">แผงวงจรหลัก</p></div>
+                    </div>
+                    <!-- Memory -->
+                    <div data-category="memory" onclick="showInfo('ram')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/dcfce7/15803d?text=RAM" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">RAM</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_ram_short">ความจำชั่วคราว</p></div>
+                    </div>
+                    <div data-category="memory" onclick="showInfo('storage')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/ffedd5/c2410c?text=SSD" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">SSD/HDD</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_storage_short">ความจำถาวร</p></div>
+                    </div>
+                    <!-- Accessory -->
+                    <div data-category="accessory" onclick="showInfo('otg')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/fce7f3/db2777?text=OTG+Adapter" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">OTG Adapter</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_otg_short">หัวแปลงเชื่อมต่อมือถือ</p></div>
+                    </div>
+                    <div data-category="accessory" onclick="showInfo('datacable')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/e2e8f0/475569?text=Data+Cable" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">Data Cable</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_cable_short">สายชาร์จและโอนข้อมูล</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: SOFTWARE -->
+        <section id="software" class="page-section bg-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4" data-i18n="software_title">ซอฟต์แวร์ (Software)</h2>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 mb-10">
+                    <button onclick="filterItems('sw-grid', 'all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_all">ทั้งหมด</button>
+                    <button onclick="filterItems('sw-grid', 'system')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_os">ซอฟต์แวร์ระบบ</button>
+                    <button onclick="filterItems('sw-grid', 'application')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_apps">ซอฟต์แวร์ประยุกต์</button>
+                </div>
+                <div id="sw-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div data-category="system" onclick="showInfo('windows')" class="item-card bg-slate-50 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-slate-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/2563eb/ffffff?text=Windows" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">Windows</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_win_short">ระบบปฏิบัติการยอดนิยม</p></div>
+                    </div>
+                    <div data-category="application" onclick="showInfo('browser')" class="item-card bg-slate-50 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-slate-100 flex flex-col overflow-hidden">
+                        <img src="https://placehold.co/400x300/facc15/000000?text=Browser" class="item-image">
+                        <div class="p-5"><h3 class="text-lg font-bold">Web Browser</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_browser_short">ประตูสู่โลกอินเทอร์เน็ต</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: TROUBLESHOOT -->
+        <section id="troubleshoot" class="page-section bg-slate-50 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4" data-i18n="trouble_title">แก้ปัญหาคอมฯ เบื้องต้น</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-red-500">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2" data-i18n="prob1_title">เปิดเครื่องไม่ติด</h3>
+                        <p class="text-gray-600 text-sm" data-i18n="prob1_desc">เช็คปลั๊กไฟว่าเสียบแน่นไหม</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-yellow-500">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2" data-i18n="prob2_title">เครื่องช้า</h3>
+                        <p class="text-gray-600 text-sm" data-i18n="prob2_desc">รีสตาร์ทเครื่องช่วยได้</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 6: SHORTCUTS -->
+        <section id="shortcuts" class="page-section gradient-bg text-white py-12 flex-grow">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4" data-i18n="shortcuts_title">คีย์ลัดน่ารู้</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                        <h3 class="text-2xl font-bold mb-4" data-i18n="sc_edit_title">แก้ไขข้อความ</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between"><span class="bg-white text-blue-600 px-3 py-1 rounded font-bold">Ctrl + C</span><span data-i18n="sc_copy">คัดลอก</span></div>
+                            <div class="flex justify-between"><span class="bg-white text-blue-600 px-3 py-1 rounded font-bold">Ctrl + V</span><span data-i18n="sc_paste">วาง</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-gray-300 py-12 mt-auto relative z-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-white text-xl font-bold mb-4">ComBasics</p>
+                <div class="flex justify-center space-x-4 mb-6">
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-line"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+                <p class="text-sm" data-i18n="footer_copy">&copy; 2025 ComBasics Learning Center.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden animate-fade-in-up">
+            <img id="modal-image" src="" class="w-full h-48 object-cover hidden sm:block">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="modal-title" class="text-2xl font-bold text-gray-900"></h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-2xl"></i></button>
+                </div>
+                <div id="modal-content" class="text-gray-600 space-y-3 leading-relaxed"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        // --- TRANSLATION DATA (FULL) ---
+        const translations = {
+            th: {
+                nav_home: "หน้าแรก", nav_whatis: "คืออะไร?", nav_hardware: "ฮาร์ดแวร์", nav_software: "ซอฟต์แวร์", nav_troubleshoot: "แก้ปัญหา", nav_shortcuts: "คีย์ลัด",
+                hero_badge: "✨ แหล่งเรียนรู้สำหรับมือใหม่", hero_title: "คอมพิวเตอร์<br>เรื่องง่ายกว่าที่คิด", hero_desc: "เรียนรู้ส่วนประกอบ การทำงาน และเคล็ดลับการใช้งานคอมพิวเตอร์พื้นฐาน ครบจบในที่เดียว", btn_view_content: "ดูเนื้อหาทั้งหมด",
+                content_title: "ในเว็บไซต์นี้มีอะไรบ้าง?", content_subtitle: "เลือกหัวข้อที่คุณสนใจเพื่อเริ่มเรียนรู้ได้เลย",
+                card1_title: "1. คอมพิวเตอร์คืออะไร?", card1_desc: "ปูพื้นฐานความเข้าใจว่าคอมพิวเตอร์ทำงานอย่างไร",
+                card2_title: "2. รู้จักฮาร์ดแวร์", card2_desc: "เจาะลึกอุปกรณ์ที่จับต้องได้ เช่น CPU, RAM",
+                card3_title: "3. โลกของซอฟต์แวร์", card3_desc: "แยกแยะประเภทโปรแกรมต่างๆ และระบบปฏิบัติการ",
+                card4_title: "4. แก้ปัญหา & เทคนิค", card4_desc: "วิธีแก้ปัญหาคอมฯ เบื้องต้นและคีย์ลัด",
+                whatis_title: "คอมพิวเตอร์ทำงานอย่างไร?", whatis_subtitle: "หลักการทำงานของคอมพิวเตอร์คล้ายกับสมองมนุษย์",
+                step1_title: "1. รับข้อมูล (Input)", step1_desc: "รับคำสั่งผ่านอุปกรณ์ เช่น คีย์บอร์ด",
+                step2_title: "2. ประมวลผล (Process)", step2_desc: "CPU คิดคำนวณตามคำสั่ง",
+                step3_title: "3. แสดงผล (Output)", step3_desc: "แสดงผลลัพธ์ผ่านหน้าจอ",
+                hardware_title: "ฮาร์ดแวร์ (Hardware)", hardware_subtitle: "อุปกรณ์ที่จับต้องได้",
+                filter_all: "ทั้งหมด", filter_process: "ประมวลผล", filter_memory: "ความจำ", filter_peripheral: "อุปกรณ์ต่อพ่วง", filter_os: "ระบบปฏิบัติการ", filter_apps: "แอพพลิเคชัน",
+                software_title: "ซอฟต์แวร์ (Software)",
+                item_cpu_short: "สมองของคอมพิวเตอร์", item_mb_short: "แผงวงจรหลัก", item_ram_short: "ความจำชั่วคราว", item_storage_short: "ความจำถาวร",
+                item_win_short: "ระบบปฏิบัติการยอดนิยม", item_browser_short: "ประตูสู่โลกอินเทอร์เน็ต",
+                trouble_title: "แก้ปัญหาคอมฯ เบื้องต้น", prob1_title: "เปิดเครื่องไม่ติด", prob1_desc: "เช็คปลั๊กไฟและสายเชื่อมต่อ", prob2_title: "เครื่องช้า", prob2_desc: "ลองรีสตาร์ทเครื่องและลบไฟล์ขยะ",
+                shortcuts_title: "คีย์ลัดน่ารู้", sc_edit_title: "แก้ไขข้อความ", sc_copy: "คัดลอก", sc_paste: "วาง",
+                footer_copy: "&copy; 2025 ComBasics Learning Center.",
+                filter_accessory: "อุปกรณ์เสริม",
+                item_otg_short: "หัวแปลงเชื่อมต่อมือถือ",
+                item_cable_short: "สายชาร์จและโอนข้อมูล"
+            },
+            en: {
+                nav_home: "Home", nav_whatis: "What is?", nav_hardware: "Hardware", nav_software: "Software", nav_troubleshoot: "Fixes", nav_shortcuts: "Shortcuts",
+                hero_badge: "✨ Beginner Learning Hub", hero_title: "Computers<br>Made Simple", hero_desc: "Learn basics, components, and tips all in one place. Easy to understand.", btn_view_content: "View Content",
+                content_title: "What's Inside?", content_subtitle: "Choose a topic to start learning.",
+                card1_title: "1. What is Computer?", card1_desc: "Understanding the basics of how it works.",
+                card2_title: "2. Hardware", card2_desc: "Tangible parts like CPU, RAM.",
+                card3_title: "3. Software", card3_desc: "Types of programs and OS.",
+                card4_title: "4. Troubleshooting", card4_desc: "Basic fixes and shortcuts.",
+                whatis_title: "How Computers Work?", whatis_subtitle: "Similar to the human brain, in 3 steps.",
+                step1_title: "1. Input", step1_desc: "Receiving commands via keyboard/mouse.",
+                step2_title: "2. Process", step2_desc: "CPU calculates orders.",
+                step3_title: "3. Output", step3_desc: "Displaying results on screen.",
+                hardware_title: "Hardware", hardware_subtitle: "Physical components.",
+                filter_all: "All", filter_process: "Process", filter_memory: "Memory", filter_peripheral: "Peripheral", filter_os: "OS", filter_apps: "Apps",
+                software_title: "Software",
+                item_cpu_short: "The Brain", item_mb_short: "Main Circuit Board", item_ram_short: "Temporary Memory", item_storage_short: "Permanent Storage",
+                item_win_short: "Popular OS", item_browser_short: "Internet Gateway",
+                trouble_title: "Basic Troubleshooting", prob1_title: "Won't Turn On", prob1_desc: "Check power plugs and cables.", prob2_title: "Slow PC", prob2_desc: "Try restarting and clearing trash.",
+                shortcuts_title: "Useful Shortcuts", sc_edit_title: "Editing", sc_copy: "Copy", sc_paste: "Paste",
+                footer_copy: "&copy; 2025 ComBasics Learning Center.",
+                filter_accessory: "Accessories",
+                item_otg_short: "Mobile Adapter",
+                item_cable_short: "Charging & Data Cable"
+            },
+            jp: {
+                nav_home: "ホーム", nav_whatis: "基本", nav_hardware: "ハードウェア", nav_software: "ソフトウェア", nav_troubleshoot: "トラブル", nav_shortcuts: "ショートカット",
+                hero_badge: "✨ 初心者向け学習ハブ", hero_title: "パソコン<br>簡単ガイド", hero_desc: "基本構成、操作、ヒントをここで学びましょう。", btn_view_content: "内容を見る",
+                content_title: "サイトの内容", content_subtitle: "トピックを選んで学習を開始。",
+                card1_title: "1. パソコンとは？", card1_desc: "仕組みの基本を理解する。",
+                card2_title: "2. ハードウェア", card2_desc: "CPUやRAMなどの物理的部品。",
+                card3_title: "3. ソフトウェア", card3_desc: "プログラムの種類とOS。",
+                card4_title: "4. トラブル解決", card4_desc: "基本的な修正とショートカット。",
+                whatis_title: "仕組みは？", whatis_subtitle: "人間の脳のように3つのステップで動きます。",
+                step1_title: "1. 入力 (Input)", step1_desc: "キーボード等で命令を受け取る。",
+                step2_title: "2. 処理 (Process)", step2_desc: "CPUが計算・処理する。",
+                step3_title: "3. 出力 (Output)", step3_desc: "画面に結果を表示する。",
+                hardware_title: "ハードウェア", hardware_subtitle: "物理的な装置",
+                filter_all: "すべて", filter_process: "処理", filter_memory: "メモリ", filter_peripheral: "周辺機器", filter_os: "OS", filter_apps: "アプリ",
+                software_title: "ソフトウェア",
+                item_cpu_short: "パソコンの脳", item_mb_short: "メイン基板", item_ram_short: "一時メモリ", item_storage_short: "永続ストレージ",
+                item_win_short: "人気OS", item_browser_short: "ネットへの入り口",
+                trouble_title: "トラブル解決", prob1_title: "起動しない", prob1_desc: "電源プラグを確認してください。", prob2_title: "遅い", prob2_desc: "再起動を試してください。",
+                shortcuts_title: "ショートカット", sc_edit_title: "編集", sc_copy: "コピー", sc_paste: "貼り付け",
+                footer_copy: "&copy; 2025 ComBasics Learning Center.",
+                filter_accessory: "アクセサリー",
+                item_otg_short: "OTGアダプター",
+                item_cable_short: "データケーブル"
+            },
+            cn: {
+                nav_home: "首页", nav_whatis: "是什么", nav_hardware: "硬件", nav_software: "软件", nav_troubleshoot: "故障排除", nav_shortcuts: "快捷键",
+                hero_badge: "✨ 初学者学习中心", hero_title: "电脑基础<br>其实很简单", hero_desc: "了解计算机组件、操作和技巧。", btn_view_content: "查看内容",
+                content_title: "网站内容", content_subtitle: "选择一个主题开始学习。",
+                card1_title: "1. 什么是电脑？", card1_desc: "了解基本工作原理。",
+                card2_title: "2. 硬件", card2_desc: "CPU, RAM 等物理组件。",
+                card3_title: "3. 软件", card3_desc: "程序类型和操作系统。",
+                card4_title: "4. 故障排除", card4_desc: "基本修复和快捷键。",
+                whatis_title: "电脑如何工作？", whatis_subtitle: "像人脑一样，分三步。",
+                step1_title: "1. 输入 (Input)", step1_desc: "通过键盘鼠标接收指令。",
+                step2_title: "2. 处理 (Process)", step2_desc: "CPU 进行计算。",
+                step3_title: "3. 输出 (Output)", step3_desc: "在屏幕上显示结果。",
+                hardware_title: "硬件 (Hardware)", hardware_subtitle: "物理设备",
+                filter_all: "全部", filter_process: "处理", filter_memory: "存储", filter_peripheral: "外设", filter_os: "系统", filter_apps: "应用",
+                software_title: "软件 (Software)",
+                item_cpu_short: "电脑的大脑", item_mb_short: "主板", item_ram_short: "临时内存", item_storage_short: "永久存储",
+                item_win_short: "流行系统", item_browser_short: "互联网入口",
+                trouble_title: "基本故障排除", prob1_title: "无法开机", prob1_desc: "检查电源插头。", prob2_title: "运行缓慢", prob2_desc: "尝试重启或清理垃圾。",
+                shortcuts_title: "常用快捷键", sc_edit_title: "编辑", sc_copy: "复制", sc_paste: "粘贴",
+                footer_copy: "&copy; 2025 ComBasics Learning Center.",
+                filter_accessory: "配件",
+                item_otg_short: "OTG 转接头",
+                item_cable_short: "数据线"
+            },
+            ru: {
+                nav_home: "Главная", nav_whatis: "Основы", nav_hardware: "Железо", nav_software: "Софт", nav_troubleshoot: "Проблемы", nav_shortcuts: "Клавиши",
+                hero_badge: "✨ Центр обучения", hero_title: "Компьютер —<br>это просто", hero_desc: "Изучите основы, компоненты и советы в одном месте.", btn_view_content: "Смотреть",
+                content_title: "Содержание", content_subtitle: "Выберите тему.",
+                card1_title: "1. Что это?", card1_desc: "Основы работы ПК.",
+                card2_title: "2. Железо", card2_desc: "CPU, RAM и др.",
+                card3_title: "3. Софт", card3_desc: "Программы и ОС.",
+                card4_title: "4. Решения", card4_desc: "Исправления и советы.",
+                whatis_title: "Как это работает?", whatis_subtitle: "3 этапа работы.",
+                step1_title: "1. Ввод", step1_desc: "Команды с клавиатуры.",
+                step2_title: "2. Процесс", step2_desc: "Обработка CPU.",
+                step3_title: "3. Вывод", step3_desc: "Результат на экран.",
+                hardware_title: "Оборудование", hardware_subtitle: "Физические части",
+                filter_all: "Все", filter_process: "Процесс", filter_memory: "Память", filter_peripheral: "Периферия", filter_os: "ОС", filter_apps: "Приложения",
+                software_title: "Программное обеспечение",
+                item_cpu_short: "Мозг ПК", item_mb_short: "Материнка", item_ram_short: "ОЗУ", item_storage_short: "Диск",
+                item_win_short: "Популярная ОС", item_browser_short: "Браузер",
+                trouble_title: "Устранение неполадок", prob1_title: "Не включается", prob1_desc: "Проверьте питание.", prob2_title: "Тормозит", prob2_desc: "Перезагрузите ПК.",
+                shortcuts_title: "Горячие клавиши", sc_edit_title: "Редактирование", sc_copy: "Копировать", sc_paste: "Вставить",
+                footer_copy: "&copy; 2025 ComBasics.",
+                filter_accessory: "Аксессуары",
+                item_otg_short: "OTG Адаптер",
+                item_cable_short: "Кабель данных"
+            },
+            hi: {
+                nav_home: "होम", nav_whatis: "क्या है?", nav_hardware: "हार्डवेयर", nav_software: "सॉफ्टवेयर", nav_troubleshoot: "समस्या", nav_shortcuts: "शॉर्टकट",
+                hero_badge: "✨ शुरुआती गाइड", hero_title: "कंप्यूटर<br>बेहद आसान", hero_desc: "कंप्यूटर की मूल बातें और टिप्स सीखें।", btn_view_content: "सामग्री देखें",
+                content_title: "अंदर क्या है?", content_subtitle: "सीखना शुरू करें।",
+                card1_title: "1. कंप्यूटर क्या है?", card1_desc: "यह कैसे काम करता है।",
+                card2_title: "2. हार्डवेयर", card2_desc: "CPU, RAM जैसे पुर्जे।",
+                card3_title: "3. सॉफ्टवेयर", card3_desc: "प्रोग्राम और OS।",
+                card4_title: "4. समस्या निवारण", card4_desc: "सुझाव और शॉर्टकट।",
+                whatis_title: "यह कैसे काम करता है?", whatis_subtitle: "मानव मस्तिष्क की तरह 3 चरण।",
+                step1_title: "1. इनपुट", step1_desc: "कीबोर्ड/माउस से आदेश।",
+                step2_title: "2. प्रक्रिया (Process)", step2_desc: "CPU गणना करता है।",
+                step3_title: "3. आउटपुट", step3_desc: "स्क्रीन पर परिणाम।",
+                hardware_title: "हार्डवेयर", hardware_subtitle: "भौतिक उपकरण",
+                filter_all: "सभी", filter_process: "प्रक्रिया", filter_memory: "मेमोरी", filter_peripheral: "बाहरी", filter_os: "OS", filter_apps: "ऐप्स",
+                software_title: "सॉफ्टवेयर",
+                item_cpu_short: "कंप्यूटर का दिमाग", item_mb_short: "मुख्य बोर्ड", item_ram_short: "अस्थायी मेमोरी", item_storage_short: "स्थायी स्टोरेज",
+                item_win_short: "लोकप्रिय OS", item_browser_short: "इंटरनेट गेटवे",
+                trouble_title: "बुनियादी सुधार", prob1_title: "चालू नहीं हो रहा", prob1_desc: "पावर चेक करें।", prob2_title: "धीमा है", prob2_desc: "रीस्टार्ट करें।",
+                shortcuts_title: "शॉर्टकट", sc_edit_title: "एडिटिंग", sc_copy: "कॉपी", sc_paste: "पेस्ट",
+                footer_copy: "&copy; 2025 ComBasics.",
+                filter_accessory: "सहायक उपकरण",
+                item_otg_short: "OTG एडेप्टर",
+                item_cable_short: "डाटा केबल"
+            }
+        };
+
+        const modalData = {
+            cpu: { th: {t: "CPU", d: "<p>สมองของคอมพิวเตอร์ คิดคำนวณและประมวลผลคำสั่งทั้งหมด</p>"}, en: {t: "CPU", d: "<p>The brain of the computer. It processes all instructions.</p>"}, jp: {t: "CPU", d: "<p>コンピュータの脳。すべての命令を処理します。</p>"}, cn: {t: "CPU", d: "<p>电脑的大脑，处理所有指令。</p>"}, ru: {t: "ЦП", d: "<p>Мозг компьютера.</p>"}, hi: {t: "CPU", d: "<p>कंप्यूटर का दिमाग।</p>"} },
+            mainboard: { th: {t: "Mainboard", d: "<p>แผงวงจรหลักที่เชื่อมต่อทุกอย่างเข้าด้วยกัน</p>"}, en: {t: "Mainboard", d: "<p>The main circuit board connecting everything.</p>"}, jp: {t: "マザーボード", d: "<p>すべてを接続するメイン基板。</p>"}, cn: {t: "主板", d: "<p>连接一切的主电路板。</p>"}, ru: {t: "Материнская плата", d: "<p>Главная плата.</p>"}, hi: {t: "मेनबोर्ड", d: "<p>सब कुछ जोड़ने वाला मुख्य बोर्ड।</p>"} },
+            ram: { th: {t: "RAM", d: "<p>หน่วยความจำชั่วคราว ข้อมูลหายเมื่อปิดเครื่อง</p>"}, en: {t: "RAM", d: "<p>Temporary memory. Data is lost when powered off.</p>"}, jp: {t: "RAM", d: "<p>一時メモリ。電源を切るとデータが消えます。</p>"}, cn: {t: "内存 (RAM)", d: "<p>临时内存，断电丢失数据。</p>"}, ru: {t: "ОЗУ", d: "<p>Временная память.</p>"}, hi: {t: "RAM", d: "<p>अस्थायी मेमोरी।</p>"} },
+            storage: { th: {t: "SSD/HDD", d: "<p>หน่วยความจำถาวร ใช้เก็บไฟล์และโปรแกรม</p>"}, en: {t: "SSD/HDD", d: "<p>Permanent storage for files and programs.</p>"}, jp: {t: "ストレージ", d: "<p>ファイルやプログラムのための永続ストレージ。</p>"}, cn: {t: "存储 (SSD/HDD)", d: "<p>用于文件和程序的永久存储。</p>"}, ru: {t: "SSD/HDD", d: "<p>Постоянное хранилище.</p>"}, hi: {t: "स्टोरेज", d: "<p>फाइलों के लिए स्थायी स्टोरेज।</p>"} },
+            windows: { th: {t: "Windows", d: "<p>ระบบปฏิบัติการยอดนิยมจาก Microsoft</p>"}, en: {t: "Windows", d: "<p>Popular OS by Microsoft.</p>"}, jp: {t: "Windows", d: "<p>マイクロソフトの人気OS。</p>"}, cn: {t: "Windows", d: "<p>微软的流行操作系统。</p>"}, ru: {t: "Windows", d: "<p>Популярная ОС.</p>"}, hi: {t: "विंडोज़", d: "<p>माइक्रोसॉफ्ट का लोकप्रिय OS।</p>"} },
+            browser: { th: {t: "Web Browser", d: "<p>โปรแกรมสำหรับเข้าเว็บไซต์ เช่น Chrome</p>"}, en: {t: "Web Browser", d: "<p>Program to access websites like Chrome.</p>"}, jp: {t: "ブラウザ", d: "<p>Chromeなどのウェブ閲覧ソフト。</p>"}, cn: {t: "浏览器", d: "<p>访问网站的程序。</p>"}, ru: {t: "Браузер", d: "<p>Для доступа к сайтам.</p>"}, hi: {t: "ब्राउज़र", d: "<p>वेबसाइट एक्सेस करने के लिए।</p>"} },
+            otg: {
+                th: {t: "OTG Adapter (On-The-Go)", d: "<p><strong>คืออะไร:</strong> อุปกรณ์แปลงพอร์ตให้มือถือหรือแท็บเล็ตสามารถเชื่อมต่ออุปกรณ์ USB ได้ (เช่น แฟลชไดร์ฟ, เมาส์)</p><p><strong>วิธีใช้:</strong><ol class='list-decimal list-inside mt-2 space-y-1'><li>เสียบหัวเล็ก (USB-C/Micro) เข้ากับมือถือ</li><li>นำแฟลชไดร์ฟหรืออุปกรณ์ USB มาเสียบที่ช่องด้านหลังของ OTG</li><li>มือถือจะแจ้งเตือนว่าพบอุปกรณ์เชื่อมต่อ พร้อมใช้งานได้ทันที</li></ol>"},
+                en: {t: "OTG Adapter", d: "<p><strong>What is it:</strong> An adapter that allows mobile devices to act as a host for USB peripherals.</p><p><strong>How to use:</strong> Plug the small end into your phone, then plug your USB drive or mouse into the other end.</p>"},
+                jp: {t: "OTGアダプター", d: "<p><strong>概要:</strong> モバイル端末でUSB機器を使用できるようにするアダプター。</p><p><strong>使い方:</strong> 小さい方をスマホに挿し、もう片方にUSBメモリ等を接続します。</p>"},
+                cn: {t: "OTG 转接头", d: "<p><strong>是什么:</strong> 允许手机连接USB设备的转接头。</p><p><strong>用法:</strong> 将小头插入手机，大头连接USB设备。</p>"},
+                ru: {t: "OTG Адаптер", d: "<p><strong>Что это:</strong> Адаптер для подключения USB к телефону.</p><p><strong>Как использовать:</strong> Вставьте в телефон, затем подключите USB-устройство.</p>"},
+                hi: {t: "OTG एडेप्टर", d: "<p><strong>यह क्या है:</strong> मोबाइल को USB डिवाइस से जोड़ने वाला एडेप्टर।</p><p><strong>उपयोग:</strong> इसे फोन में लगाएं, फिर USB डिवाइस कनेक्ट करें।</p>"}
+            },
+            datacable: {
+                th: {t: "Data/Charging Cable", d: "<p><strong>คืออะไร:</strong> สายสำหรับชาร์จไฟและโอนถ่ายข้อมูลระหว่างอุปกรณ์</p><p><strong>วิธีใช้ (สำหรับโอนข้อมูล):</strong><ol class='list-decimal list-inside mt-2 space-y-1'><li>เสียบหัว USB เข้ากับคอมพิวเตอร์</li><li>เสียบอีกด้านเข้ากับมือถือ</li><li>ที่หน้าจอมือถือ เลือกโหมด 'File Transfer' หรือ 'โอนถ่ายไฟล์'</li><li>เปิด My Computer ในคอมฯ จะพบไดรฟ์ของมือถือ</li></ol>"},
+                en: {t: "Data/Charging Cable", d: "<p><strong>What is it:</strong> Cable for charging and transferring data.</p><p><strong>How to use:</strong> Connect USB to PC and the other end to phone. Select 'File Transfer' mode on phone.</p>"},
+                jp: {t: "データケーブル", d: "<p><strong>概要:</strong> 充電およびデータ転送用ケーブル。</p><p><strong>使い方:</strong> PCとスマホを接続し、スマホ側で「ファイル転送」モードを選択します。</p>"},
+                cn: {t: "数据线", d: "<p><strong>是什么:</strong> 用于充电和数据传输。</p><p><strong>用法:</strong> 连接电脑和手机，在手机上选择“传输文件”模式。</p>"},
+                ru: {t: "Кабель данных", d: "<p><strong>Что это:</strong> Кабель для зарядки и данных.</p><p><strong>Как использовать:</strong> Подключите к ПК и телефону. Выберите режим передачи файлов.</p>"},
+                hi: {t: "डाटा केबल", d: "<p><strong>यह क्या है:</strong> चार्जिंग और डेटा ट्रांसफर के लिए केबल।</p><p><strong>उपयोग:</strong> पीसी और फोन को कनेक्ट करें, फोन पर 'फाइल ट्रांसफर' चुनें।</p>"}
+            }
+        };
+
+        let currentLang = 'th';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.body.className = `text-slate-800 transition-colors duration-300 lang-${lang}`;
+            
+            // Update simple text elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        // --- NAVIGATION & LOGIC ---
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.getElementById('hamburger-btn');
+            
+            if (!menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+                btn.classList.remove('hamburger-active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.getElementById('hamburger-btn');
+            menu.classList.toggle('hidden');
+            btn.classList.toggle('hamburger-active');
+        }
+
+        function filterItems(gridId, category) {
+            const grid = document.getElementById(gridId);
+            const items = grid.querySelectorAll('.item-card');
+            
+            // Update active button state
+            const btnContainer = grid.previousElementSibling;
+            btnContainer.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white', 'border-blue-600');
+                btn.classList.add('bg-white', 'text-gray-600', 'border-gray-300');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-600', 'border-gray-300');
+            event.target.classList.add('active', 'bg-blue-600', 'text-white', 'border-blue-600');
+
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function showInfo(type) {
+            const data = modalData[type] ? modalData[type][currentLang] : {t: "Info", d: "Content not available"};
+            
+            document.getElementById('modal-title').textContent = data.t;
+            document.getElementById('modal-content').innerHTML = data.d;
+            
+            // Image mapping
+            const imgMap = {
+                cpu: "https://placehold.co/600x400/e0f2fe/0369a1?text=CPU",
+                ram: "https://placehold.co/600x400/dcfce7/15803d?text=RAM",
+                storage: "https://placehold.co/600x400/ffedd5/c2410c?text=SSD",
+                mainboard: "https://placehold.co/600x400/f3e8ff/7e22ce?text=Mainboard",
+                windows: "https://placehold.co/600x400/2563eb/ffffff?text=Windows",
+                browser: "https://placehold.co/600x400/facc15/000000?text=Browser",
+                otg: "https://placehold.co/600x400/fce7f3/db2777?text=Using+OTG+Adapter",
+                datacable: "https://placehold.co/600x400/e2e8f0/475569?text=Using+Data+Cable"
+            };
+
+            const modalImg = document.getElementById('modal-image');
+            if (imgMap[type]) {
+                modalImg.src = imgMap[type];
+                modalImg.classList.remove('hidden');
+            } else {
+                modalImg.classList.add('hidden');
+            }
+
+            document.getElementById('info-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('info-modal').classList.add('hidden');
+        }
+
+        document.getElementById('info-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
