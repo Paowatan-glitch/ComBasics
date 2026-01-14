@@ -6,145 +6,87 @@
     <title>ComBasics - ความรู้เบื้องต้นเกี่ยวกับคอมพิวเตอร์</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Prompt & Sarabun for Multi-lang) -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Sarabun:wght@400;600&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body {
-            font-family: 'Prompt', 'Sarabun', sans-serif;
-            background-color: #f8fafc;
-        }
-        /* Specific fonts for specific languages */
-        body.lang-jp { font-family: 'Noto Sans JP', sans-serif; }
-        body.lang-cn { font-family: 'Noto Sans SC', sans-serif; }
-        body.lang-hi { font-family: 'Noto Sans Devanagari', sans-serif; }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-        .page-section {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .page-section.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .filter-btn.active {
-            background-color: #2563eb;
-            color: white;
-            border-color: #2563eb;
-        }
-        .item-image {
-            height: 160px;
-            width: 100%;
-            object-fit: cover;
-            border-top-left-radius: 0.75rem;
-            border-top-right-radius: 0.75rem;
-        }
-        /* Hamburger Animation */
-        .hamburger-line {
-            transition: all 0.3s ease-in-out;
-            transform-origin: center;
-        }
-        .hamburger-active .line-1 {
-            transform: translateY(8px) rotate(45deg);
-        }
-        .hamburger-active .line-2 {
-            opacity: 0;
-            transform: translateX(-10px);
-        }
-        .hamburger-active .line-3 {
-            transform: translateY(-8px) rotate(-45deg);
-        }
+        body { font-family: 'Prompt', 'Sarabun', sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+        .page-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .filter-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
+        .item-image { height: 160px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; background-color: #e2e8f0; }
+        .nav-glass { background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 138, 0.95) 100%); backdrop-filter: blur(12px); box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.3); border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+        .item-card { border: 1px solid #e2e8f0; cursor: pointer; transition: transform 0.2s; }
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .kbd { display: inline-block; padding: 0.1rem 0.4rem; font-family: monospace; font-weight: bold; color: #1e293b; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.25rem; font-size: 0.85em; }
     </style>
 </head>
 <body class="text-slate-800 transition-colors duration-300">
 
     <!-- Navbar -->
-    <nav class="bg-white shadow-md fixed w-full z-50">
+    <nav class="nav-glass fixed w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <div class="flex items-center cursor-pointer mr-4" onclick="navigateTo('home')">
-                        <i class="fa-solid fa-laptop-code text-blue-600 text-2xl mr-2"></i>
-                        <span class="font-bold text-xl text-gray-800">ComBasics</span>
-                    </div>
-                    
-                    <!-- Language Selector -->
-                    <div class="relative group">
-                        <select id="language-selector" onchange="changeLanguage(this.value)" class="appearance-none bg-blue-50 border border-blue-200 text-blue-800 text-sm font-medium py-1 px-3 pr-8 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer hover:bg-blue-100 transition">
-                            <option value="th">🇹🇭 ไทย</option>
-                            <option value="en">🇺🇸 ENG</option>
-                            <option value="jp">🇯🇵 日本語</option>
-                            <option value="cn">🇨🇳 中文</option>
-                            <option value="ru">🇷🇺 Русский</option>
-                            <option value="hi">🇮🇳 हिन्दी</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-600">
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                    <div class="flex items-center cursor-pointer mr-6 group" onclick="navigateTo('home')">
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mr-3 shadow-md group-hover:scale-105 transition-transform duration-200">
+                            <i class="fa-solid fa-laptop-code text-blue-800 text-xl"></i>
                         </div>
+                        <span class="font-bold text-xl text-white tracking-wide text-shadow-sm">ComBasics</span>
+                    </div>
+                    <!-- Language Selector (Fixed Visibility) -->
+                    <div class="relative group hidden sm:block">
+                        <select id="language-selector" onchange="changeLanguage(this.value)" class="appearance-none bg-white/10 border border-white/20 text-white text-sm font-medium py-1.5 px-3 pr-8 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer hover:bg-white/20 transition backdrop-blur-md">
+                            <option value="th" class="text-black bg-white">🇹🇭 ไทย</option>
+                            <option value="en" class="text-black bg-white">🇺🇸 ENG</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white/70"><i class="fa-solid fa-chevron-down text-xs"></i></div>
                     </div>
                 </div>
-                
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
-                    <button onclick="navigateTo('home')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_home">หน้าแรก</button>
-                    <button onclick="navigateTo('whatis')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_whatis">คืออะไร?</button>
-                    <button onclick="navigateTo('hardware')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_hardware">ฮาร์ดแวร์</button>
-                    <button onclick="navigateTo('software')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_software">ซอฟต์แวร์</button>
-                    <button onclick="navigateTo('troubleshoot')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_troubleshoot">แก้ปัญหา</button>
-                    <button onclick="navigateTo('shortcuts')" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition" data-i18n="nav_shortcuts">คีย์ลัด</button>
+                    <button onclick="navigateTo('home')" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition border border-transparent hover:border-white/10" data-i18n="nav_home">หน้าแรก</button>
+                    <button onclick="navigateTo('whatis')" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition border border-transparent hover:border-white/10" data-i18n="nav_whatis">คืออะไร?</button>
+                    <button onclick="navigateTo('hardware')" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition border border-transparent hover:border-white/10" data-i18n="nav_hardware">ฮาร์ดแวร์</button>
+                    <button onclick="navigateTo('software')" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition border border-transparent hover:border-white/10" data-i18n="nav_software">ซอฟต์แวร์</button>
+                    <button onclick="navigateTo('troubleshoot')" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition border border-transparent hover:border-white/10" data-i18n="nav_troubleshoot">แก้ปัญหา</button>
+                    <button onclick="navigateTo('shortcuts')" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition border border-transparent hover:border-white/10" data-i18n="nav_shortcuts">คีย์ลัด</button>
                 </div>
-
-                <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
-                    <button id="hamburger-btn" onclick="toggleMenu()" class="w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <span class="hamburger-line line-1 block w-6 h-0.5 bg-gray-800 rounded-full"></span>
-                        <span class="hamburger-line line-2 block w-6 h-0.5 bg-gray-800 rounded-full"></span>
-                        <span class="hamburger-line line-3 block w-6 h-0.5 bg-gray-800 rounded-full"></span>
-                    </button>
+                    <button id="hamburger-btn" onclick="toggleMenu()" class="w-10 h-10 flex flex-col justify-center items-center gap-1.5 focus:outline-none p-2 rounded-lg hover:bg-white/10 transition-colors"><i class="fa-solid fa-bars text-white text-xl"></i></button>
                 </div>
             </div>
         </div>
-        
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t p-4 shadow-lg absolute w-full left-0 bg-opacity-95 backdrop-blur-sm h-screen z-40 top-16">
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-t border-slate-700 p-4 shadow-xl absolute w-full left-0 bg-opacity-98 backdrop-blur-xl h-screen z-40 top-16">
             <div class="flex flex-col space-y-2">
-                <button onclick="navigateTo('home')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_home">หน้าแรก</button>
-                <button onclick="navigateTo('whatis')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_whatis">คืออะไร?</button>
-                <button onclick="navigateTo('hardware')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_hardware">ฮาร์ดแวร์</button>
-                <button onclick="navigateTo('software')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_software">ซอฟต์แวร์</button>
-                <button onclick="navigateTo('troubleshoot')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_troubleshoot">แก้ปัญหา</button>
-                <button onclick="navigateTo('shortcuts')" class="text-left py-3 px-4 text-gray-600 hover:bg-blue-50 rounded-lg transition font-medium text-lg" data-i18n="nav_shortcuts">คีย์ลัด</button>
+                <button onclick="navigateTo('home')" class="text-left py-3 px-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition font-medium text-lg" data-i18n="nav_home">หน้าแรก</button>
+                <button onclick="navigateTo('whatis')" class="text-left py-3 px-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition font-medium text-lg" data-i18n="nav_whatis">คืออะไร?</button>
+                <button onclick="navigateTo('hardware')" class="text-left py-3 px-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition font-medium text-lg" data-i18n="nav_hardware">ฮาร์ดแวร์</button>
+                <button onclick="navigateTo('software')" class="text-left py-3 px-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition font-medium text-lg" data-i18n="nav_software">ซอฟต์แวร์</button>
+                <button onclick="navigateTo('troubleshoot')" class="text-left py-3 px-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition font-medium text-lg" data-i18n="nav_troubleshoot">แก้ปัญหา</button>
+                <button onclick="navigateTo('shortcuts')" class="text-left py-3 px-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition font-medium text-lg" data-i18n="nav_shortcuts">คีย์ลัด</button>
             </div>
         </div>
     </nav>
 
-    <!-- CONTENT CONTAINER -->
     <div class="pt-16 min-h-screen flex flex-col">
-
-        <!-- PAGE 1: HOME -->
+        <!-- HOME -->
         <section id="home" class="page-section active flex-col gradient-bg text-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-20">
                 <div class="flex flex-col md:flex-row items-center min-h-[60vh]">
                     <div class="md:w-1/2 mb-10 md:mb-0">
                         <span class="bg-blue-500 bg-opacity-30 text-blue-50 px-4 py-1 rounded-full text-sm font-semibold mb-4 inline-block backdrop-blur-sm animate-pulse" data-i18n="hero_badge">✨ แหล่งเรียนรู้สำหรับมือใหม่</span>
                         <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-md" data-i18n="hero_title">คอมพิวเตอร์<br>เรื่องง่ายกว่าที่คิด</h1>
-                        <p class="text-blue-100 text-lg mb-8 max-w-lg leading-relaxed" data-i18n="hero_desc">
-                            เรียนรู้ส่วนประกอบ การทำงาน และเคล็ดลับการใช้งานคอมพิวเตอร์พื้นฐาน ครบจบในที่เดียว เข้าใจง่าย ใช้ได้จริง
-                        </p>
+                        <p class="text-blue-100 text-lg mb-8 max-w-lg leading-relaxed" data-i18n="hero_desc">เรียนรู้ส่วนประกอบ การทำงาน และเคล็ดลับการใช้งานคอมพิวเตอร์พื้นฐาน ครบจบในที่เดียว</p>
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <button onclick="document.getElementById('site-contents').scrollIntoView({behavior: 'smooth'})" class="bg-white text-blue-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 flex items-center justify-center group">
+                            <button onclick="document.getElementById('site-contents').scrollIntoView({behavior: 'smooth'})" class="bg-white text-blue-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition flex items-center justify-center group">
                                 <span data-i18n="btn_view_content">ดูเนื้อหาทั้งหมด</span> <i class="fa-solid fa-arrow-down ml-2 group-hover:translate-y-1 transition-transform"></i>
                             </button>
                         </div>
@@ -155,34 +97,30 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Site Contents Preview -->
             <div id="site-contents" class="bg-white text-slate-800 py-16 rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] relative z-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold text-gray-900 mb-2" data-i18n="content_title">ในเว็บไซต์นี้มีอะไรบ้าง?</h2>
-                        <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full mb-4"></div>
                         <p class="text-gray-600" data-i18n="content_subtitle">เลือกหัวข้อที่คุณสนใจเพื่อเริ่มเรียนรู้ได้เลย</p>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div onclick="navigateTo('whatis')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
-                            <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fa-solid fa-circle-question"></i></div>
+                        <div onclick="navigateTo('whatis')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-circle-question"></i></div>
                             <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card1_title">1. คอมพิวเตอร์คืออะไร?</h3>
                             <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card1_desc">ปูพื้นฐานความเข้าใจว่าคอมพิวเตอร์ทำงานอย่างไร</p>
                         </div>
-                        <div onclick="navigateTo('hardware')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
-                            <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-purple-600 group-hover:text-white transition-colors"><i class="fa-solid fa-microchip"></i></div>
+                        <div onclick="navigateTo('hardware')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-microchip"></i></div>
                             <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card2_title">2. รู้จักฮาร์ดแวร์</h3>
                             <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card2_desc">เจาะลึกอุปกรณ์ที่จับต้องได้ เช่น CPU, RAM</p>
                         </div>
-                        <div onclick="navigateTo('software')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
-                            <div class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-green-600 group-hover:text-white transition-colors"><i class="fa-brands fa-windows"></i></div>
+                        <div onclick="navigateTo('software')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-brands fa-windows"></i></div>
                             <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card3_title">3. โลกของซอฟต์แวร์</h3>
                             <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card3_desc">แยกแยะประเภทโปรแกรมต่างๆ และระบบปฏิบัติการ</p>
                         </div>
-                        <div onclick="navigateTo('troubleshoot')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-2">
-                            <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                        <div onclick="navigateTo('troubleshoot')" class="group bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-xl transition cursor-pointer hover:-translate-y-2">
+                            <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                             <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="card4_title">4. แก้ปัญหา & เทคนิค</h3>
                             <p class="text-gray-500 text-sm leading-relaxed" data-i18n="card4_desc">วิธีแก้ปัญหาคอมฯ เบื้องต้นและคีย์ลัด</p>
                         </div>
@@ -191,199 +129,201 @@
             </div>
         </section>
 
-        <!-- PAGE 2: WHAT IS -->
+        <!-- WHAT IS -->
         <section id="whatis" class="page-section bg-white py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
+                <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-i18n="whatis_title">คอมพิวเตอร์ทำงานอย่างไร?</h2>
-                    <div class="w-24 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
-                    <p class="mt-6 text-gray-600 max-w-2xl mx-auto text-lg" data-i18n="whatis_subtitle">หลักการทำงานของคอมพิวเตอร์แบ่งออกเป็น 3 ขั้นตอนหลัก</p>
+                    <p class="text-blue-500 text-sm mt-2 animate-pulse"><span data-i18n="click_to_view">คลิกที่หัวข้อเพื่อดูรายละเอียด</span></p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-center">
-                        <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fa-solid fa-keyboard"></i></div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-800" data-i18n="step1_title">1. รับข้อมูล (Input)</h3>
-                        <p class="text-gray-500" data-i18n="step1_desc">รับคำสั่งผ่านอุปกรณ์ เช่น คีย์บอร์ด เมาส์</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                    <div onclick="showInfo('step_input')" class="item-card bg-slate-50 p-6 rounded-2xl text-center hover:shadow-lg">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fa-solid fa-keyboard"></i></div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="step1_title">1. รับข้อมูล (Input)</h3>
+                        <p class="text-gray-500 text-sm" data-i18n="step1_desc">รับคำสั่งผ่านอุปกรณ์</p>
                     </div>
-                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-center">
-                        <div class="w-20 h-20 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fa-solid fa-microchip"></i></div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-800" data-i18n="step2_title">2. ประมวลผล (Process)</h3>
-                        <p class="text-gray-500" data-i18n="step2_desc">CPU คิดคำนวณตามคำสั่ง</p>
+                    <div onclick="showInfo('step_process')" class="item-card bg-slate-50 p-6 rounded-2xl text-center hover:shadow-lg">
+                        <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fa-solid fa-microchip"></i></div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="step2_title">2. ประมวลผล (Process)</h3>
+                        <p class="text-gray-500 text-sm" data-i18n="step2_desc">CPU คิดคำนวณ</p>
                     </div>
-                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 text-center">
-                        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fa-solid fa-desktop"></i></div>
-                        <h3 class="text-2xl font-bold mb-3 text-gray-800" data-i18n="step3_title">3. แสดงผล (Output)</h3>
-                        <p class="text-gray-500" data-i18n="step3_desc">แสดงผลลัพธ์ผ่านหน้าจอ</p>
+                    <div onclick="showInfo('step_storage')" class="item-card bg-slate-50 p-6 rounded-2xl text-center hover:shadow-lg">
+                        <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fa-solid fa-hard-drive"></i></div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="step4_title">3. จัดเก็บ (Storage)</h3>
+                        <p class="text-gray-500 text-sm" data-i18n="step4_desc">บันทึกข้อมูลถาวร</p>
+                    </div>
+                    <div onclick="showInfo('step_output')" class="item-card bg-slate-50 p-6 rounded-2xl text-center hover:shadow-lg">
+                        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fa-solid fa-desktop"></i></div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-800" data-i18n="step3_title">4. แสดงผล (Output)</h3>
+                        <p class="text-gray-500 text-sm" data-i18n="step3_desc">แสดงผลผ่านจอภาพ</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 3: HARDWARE -->
+        <!-- HARDWARE -->
         <section id="hardware" class="page-section bg-slate-50 py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-i18n="hardware_title">ฮาร์ดแวร์ (Hardware)</h2>
-                    <p class="text-gray-600 text-lg" data-i18n="hardware_subtitle">อุปกรณ์ที่จับต้องได้ แบ่งตามหน้าที่การทำงาน</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" data-i18n="hardware_title">ฮาร์ดแวร์</h2>
+                    <p class="text-gray-600 text-lg" data-i18n="hardware_subtitle">อุปกรณ์ที่จับต้องได้</p>
                 </div>
-                <!-- Tabs -->
                 <div class="flex flex-wrap justify-center gap-4 mb-10">
-                    <button onclick="filterItems('hw-grid', 'all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_all">ทั้งหมด</button>
-                    <button onclick="filterItems('hw-grid', 'process')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_process">ประมวลผล</button>
-                    <button onclick="filterItems('hw-grid', 'memory')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_memory">ความจำ</button>
-                    <button onclick="filterItems('hw-grid', 'peripheral')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_peripheral">อุปกรณ์ต่อพ่วง</button>
-                    <button onclick="filterItems('hw-grid', 'accessory')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_accessory">อุปกรณ์เสริม</button>
+                    <button onclick="filterItems('hw-grid', 'all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_all">ทั้งหมด</button>
+                    <button onclick="filterItems('hw-grid', 'process')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_process">ประมวลผล</button>
+                    <button onclick="filterItems('hw-grid', 'memory')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_memory">ความจำ</button>
+                    <button onclick="filterItems('hw-grid', 'peripheral')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_peripheral">อุปกรณ์ต่อพ่วง</button>
+                    <button onclick="filterItems('hw-grid', 'accessory')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_accessory">อุปกรณ์เสริม</button>
                 </div>
-                <!-- Hardware Grid -->
                 <div id="hw-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Process -->
-                    <div data-category="process" onclick="showInfo('cpu')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/e0f2fe/0369a1?text=CPU" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">CPU</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_cpu_short">สมองของคอมพิวเตอร์</p></div>
-                    </div>
-                    <div data-category="process" onclick="showInfo('mainboard')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/f3e8ff/7e22ce?text=Mainboard" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">Mainboard</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_mb_short">แผงวงจรหลัก</p></div>
-                    </div>
-                    <!-- Memory -->
-                    <div data-category="memory" onclick="showInfo('ram')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/dcfce7/15803d?text=RAM" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">RAM</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_ram_short">ความจำชั่วคราว</p></div>
-                    </div>
-                    <div data-category="memory" onclick="showInfo('storage')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/ffedd5/c2410c?text=SSD" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">SSD/HDD</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_storage_short">ความจำถาวร</p></div>
-                    </div>
-                    <!-- Accessory -->
-                    <div data-category="accessory" onclick="showInfo('otg')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/fce7f3/db2777?text=OTG+Adapter" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">OTG Adapter</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_otg_short">หัวแปลงเชื่อมต่อมือถือ</p></div>
-                    </div>
-                    <div data-category="accessory" onclick="showInfo('datacable')" class="item-card bg-white rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/e2e8f0/475569?text=Data+Cable" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">Data Cable</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_cable_short">สายชาร์จและโอนข้อมูล</p></div>
-                    </div>
+                    <div data-category="process" onclick="showInfo('cpu')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80" alt="CPU" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_cpu">CPU</h3><p class="text-gray-500 text-sm" data-i18n="item_cpu_short">สมองของคอมพิวเตอร์</p></div></div>
+                    <div data-category="process" onclick="showInfo('mainboard')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" alt="Mainboard" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_mb">Mainboard</h3><p class="text-gray-500 text-sm" data-i18n="item_mb_short">แผงวงจรหลัก</p></div></div>
+                    <div data-category="process" onclick="showInfo('gpu')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=600&q=80" alt="GPU" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_gpu">GPU</h3><p class="text-gray-500 text-sm" data-i18n="item_gpu_short">การ์ดจอ</p></div></div>
+                    <div data-category="process" onclick="showInfo('psu')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" alt="PSU" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_psu">Power Supply</h3><p class="text-gray-500 text-sm" data-i18n="item_psu_short">ตัวจ่ายไฟ</p></div></div>
+                    <div data-category="memory" onclick="showInfo('ram')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=600&q=80" alt="RAM" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_ram">RAM</h3><p class="text-gray-500 text-sm" data-i18n="item_ram_short">ความจำชั่วคราว</p></div></div>
+                    <div data-category="memory" onclick="showInfo('storage')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?auto=format&fit=crop&w=600&q=80" alt="SSD" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_storage">SSD/HDD</h3><p class="text-gray-500 text-sm" data-i18n="item_storage_short">ความจำถาวร</p></div></div>
+                    <div data-category="peripheral" onclick="showInfo('monitor')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80" alt="Monitor" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_monitor">Monitor</h3><p class="text-gray-500 text-sm" data-i18n="item_monitor_short">จอภาพ</p></div></div>
+                    <div data-category="peripheral" onclick="showInfo('mousekey')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1529236183275-4fdcf2bc987e?auto=format&fit=crop&w=600&q=80" alt="Keyboard Mouse" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_mousekey">Mouse & Key</h3><p class="text-gray-500 text-sm" data-i18n="item_mousekey_short">อุปกรณ์สั่งงาน</p></div></div>
+                    <div data-category="accessory" onclick="showInfo('otg')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1623949556303-b0d17d198863?auto=format&fit=crop&w=600&q=80" alt="OTG Adapter" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="item_otg_short">OTG Adapter</h3><p class="text-gray-500 text-sm">แปลง USB</p></div></div>
+                    <div data-category="accessory" onclick="showInfo('datacable')" class="item-card bg-white rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80" alt="Data Cable" loading="lazy" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="item_cable_short">Data Cable</h3><p class="text-gray-500 text-sm">สายชาร์จ</p></div></div>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 4: SOFTWARE -->
+        <!-- Software -->
         <section id="software" class="page-section bg-white py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4" data-i18n="software_title">ซอฟต์แวร์ (Software)</h2>
-                </div>
+                <div class="text-center mb-10"><h2 class="text-3xl font-bold text-gray-900 mb-4" data-i18n="software_title">ซอฟต์แวร์</h2></div>
                 <div class="flex flex-wrap justify-center gap-4 mb-10">
-                    <button onclick="filterItems('sw-grid', 'all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_all">ทั้งหมด</button>
-                    <button onclick="filterItems('sw-grid', 'system')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_os">ซอฟต์แวร์ระบบ</button>
-                    <button onclick="filterItems('sw-grid', 'application')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 font-medium transition" data-i18n="filter_apps">ซอฟต์แวร์ประยุกต์</button>
+                    <button onclick="filterItems('sw-grid', 'all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_all">ทั้งหมด</button>
+                    <button onclick="filterItems('sw-grid', 'system')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_os">ระบบ</button>
+                    <button onclick="filterItems('sw-grid', 'application')" class="filter-btn px-6 py-2 rounded-full border border-gray-300 bg-white text-gray-600" data-i18n="filter_apps">แอพ</button>
                 </div>
                 <div id="sw-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div data-category="system" onclick="showInfo('windows')" class="item-card bg-slate-50 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-slate-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/2563eb/ffffff?text=Windows" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">Windows</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_win_short">ระบบปฏิบัติการยอดนิยม</p></div>
-                    </div>
-                    <div data-category="application" onclick="showInfo('browser')" class="item-card bg-slate-50 rounded-xl shadow-sm hover:shadow-lg transition cursor-pointer border border-slate-100 flex flex-col overflow-hidden">
-                        <img src="https://placehold.co/400x300/facc15/000000?text=Browser" class="item-image">
-                        <div class="p-5"><h3 class="text-lg font-bold">Web Browser</h3><p class="text-gray-500 text-sm mt-2" data-i18n="item_browser_short">ประตูสู่โลกอินเทอร์เน็ต</p></div>
-                    </div>
+                    <div data-category="system" onclick="showInfo('windows')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://msftstories.thesourcemediaassets.com/sites/460/2021/06/Windows-11_Hero-Bloom-Logo-1536x864.png" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_win">Windows</h3><p class="text-gray-500 text-sm" data-i18n="item_win_short">OS ยอดนิยม</p></div></div>
+                    <div data-category="system" onclick="showInfo('macos')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=600&q=80" class="item-image"><div class="p-5"><h3 class="text-lg font-bold">macOS</h3><p class="text-gray-500 text-sm" data-i18n="item_mac_short">OS สำหรับ Mac</p></div></div>
+                    <div data-category="system" onclick="showInfo('linux')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://i0.wp.com/saixiii.com/wp-content/uploads/2017/04/linux-banner.jpg?w=600&ssl=1" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_linux">Linux</h3><p class="text-gray-500 text-sm" data-i18n="item_linux_short">OS ทางเลือก</p></div></div>
+                    <div data-category="application" onclick="showInfo('browser')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="hw_browser">Web Browser</h3><p class="text-gray-500 text-sm" data-i18n="item_browser_short">เข้าอินเทอร์เน็ต</p></div></div>
+                    <div data-category="application" onclick="showInfo('office')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=600&q=80" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="sw_office">Office</h3><p class="text-gray-500 text-sm" data-i18n="item_office_short">งานเอกสาร</p></div></div>
+                    <div data-category="application" onclick="showInfo('creative')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1572044162444-ad60f128bdea?auto=format&fit=crop&w=600&q=80" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="sw_creative">Creative</h3><p class="text-gray-500 text-sm" data-i18n="item_creative_short">กราฟิก/ตัดต่อ</p></div></div>
+                    <div data-category="application" onclick="showInfo('utility')" class="item-card bg-slate-50 rounded-xl shadow-sm overflow-hidden"><img src="https://images.unsplash.com/photo-1629654291663-ade3104a3071?auto=format&fit=crop&w=600&q=80" class="item-image"><div class="p-5"><h3 class="text-lg font-bold" data-i18n="sw_utility">Utility</h3><p class="text-gray-500 text-sm" data-i18n="item_utility_short">เครื่องมือ</p></div></div>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 5: TROUBLESHOOT -->
+        <!-- Troubleshoot -->
         <section id="troubleshoot" class="page-section bg-slate-50 py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4" data-i18n="trouble_title">แก้ปัญหาคอมฯ เบื้องต้น</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-red-500">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2" data-i18n="prob1_title">เปิดเครื่องไม่ติด</h3>
-                        <p class="text-gray-600 text-sm" data-i18n="prob1_desc">เช็คปลั๊กไฟว่าเสียบแน่นไหม</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-yellow-500">
-                        <h3 class="text-lg font-bold text-gray-900 mb-2" data-i18n="prob2_title">เครื่องช้า</h3>
-                        <p class="text-gray-600 text-sm" data-i18n="prob2_desc">รีสตาร์ทเครื่องช่วยได้</p>
-                    </div>
+                <div class="text-center mb-12"><h2 class="text-3xl font-bold text-gray-900 mb-4" data-i18n="trouble_title">แก้ปัญหาคอมฯ</h2></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div onclick="showInfo('prob1')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-red-500 hover:shadow-md transition cursor-pointer"><div class="text-red-500 text-3xl mb-2"><i class="fa-solid fa-power-off"></i></div><h3 class="font-bold" data-i18n="prob1_title">เปิดไม่ติด</h3></div>
+                    <div onclick="showInfo('prob2')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-yellow-500 hover:shadow-md transition cursor-pointer"><div class="text-yellow-500 text-3xl mb-2"><i class="fa-solid fa-gauge-high"></i></div><h3 class="font-bold" data-i18n="prob2_title">เครื่องช้า</h3></div>
+                    <div onclick="showInfo('prob3')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-blue-600 hover:shadow-md transition cursor-pointer"><div class="text-blue-600 text-3xl mb-2"><i class="fa-solid fa-desktop"></i></div><h3 class="font-bold" data-i18n="prob3_title">จอฟ้า</h3></div>
+                    <div onclick="showInfo('prob4')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-sky-400 hover:shadow-md transition cursor-pointer"><div class="text-sky-400 text-3xl mb-2"><i class="fa-solid fa-wifi"></i></div><h3 class="font-bold" data-i18n="prob4_title">ต่อเน็ตไม่ได้</h3></div>
+                    <div onclick="showInfo('prob5')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-purple-500 hover:shadow-md transition cursor-pointer"><div class="text-purple-500 text-3xl mb-2"><i class="fa-solid fa-volume-xmark"></i></div><h3 class="font-bold" data-i18n="prob5_title">เสียงไม่ดัง</h3></div>
+                    <div onclick="showInfo('prob6')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-gray-500 hover:shadow-md transition cursor-pointer"><div class="text-gray-500 text-3xl mb-2"><i class="fa-regular fa-window-maximize"></i></div><h3 class="font-bold" data-i18n="prob6_title">โปรแกรมค้าง</h3></div>
+                    <div onclick="showInfo('prob7')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-orange-400 hover:shadow-md transition cursor-pointer"><div class="text-orange-400 text-3xl mb-2"><i class="fa-solid fa-temperature-arrow-up"></i></div><h3 class="font-bold" data-i18n="prob7_title">เครื่องร้อน</h3></div>
+                    <div onclick="showInfo('prob8')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-green-500 hover:shadow-md transition cursor-pointer"><div class="text-green-500 text-3xl mb-2"><i class="fa-solid fa-shield-virus"></i></div><h3 class="font-bold" data-i18n="prob8_title">โดนไวรัส</h3></div>
+                    <div onclick="showInfo('prob9')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-teal-500 hover:shadow-md transition cursor-pointer"><div class="text-teal-500 text-3xl mb-2"><i class="fa-solid fa-print"></i></div><h3 class="font-bold" data-i18n="prob9_title">พิมพ์ไม่ออก</h3></div>
+                    <div onclick="showInfo('prob10')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-indigo-500 hover:shadow-md transition cursor-pointer"><div class="text-indigo-500 text-3xl mb-2"><i class="fa-solid fa-computer-mouse"></i></div><h3 class="font-bold" data-i18n="prob10_title">เมาส์เสีย</h3></div>
+                    <div onclick="showInfo('prob11')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-pink-500 hover:shadow-md transition cursor-pointer"><div class="text-pink-500 text-3xl mb-2"><i class="fa-solid fa-display"></i></div><h3 class="font-bold" data-i18n="prob11_title">จอกระพริบ</h3></div>
+                    <div onclick="showInfo('prob12')" class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-slate-500 hover:shadow-md transition cursor-pointer"><div class="text-slate-500 text-3xl mb-2"><i class="fa-solid fa-trash-arrow-up"></i></div><h3 class="font-bold" data-i18n="prob12_title">ลบไฟล์ผิด</h3></div>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 6: SHORTCUTS -->
+        <!-- Shortcuts -->
         <section id="shortcuts" class="page-section gradient-bg text-white py-12 flex-grow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold mb-4" data-i18n="shortcuts_title">คีย์ลัดน่ารู้</h2>
+                <div class="text-center mb-12"><h2 class="text-3xl font-bold mb-4" data-i18n="shortcuts_title">คีย์ลัดน่ารู้</h2></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4" data-i18n="sc_edit_title">แก้ไข</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Ctrl+C</span> <span data-i18n="sc_copy">Copy</span></div><div class="flex justify-between"><span class="kbd">Ctrl+V</span> <span data-i18n="sc_paste">Paste</span></div><div class="flex justify-between"><span class="kbd">Ctrl+Z</span> <span data-i18n="sc_undo">Undo</span></div><div class="flex justify-between"><span class="kbd">Ctrl+A</span> <span data-i18n="sc_selectall">Select All</span></div></div></div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4" data-i18n="sc_sys_title">Windows</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Win+D</span> <span data-i18n="sc_desktop">Desktop</span></div><div class="flex justify-between"><span class="kbd">Alt+Tab</span> <span data-i18n="sc_switch">Switch</span></div><div class="flex justify-between"><span class="kbd">Win+L</span> <span data-i18n="sc_lock">Lock</span></div><div class="flex justify-between"><span class="kbd">Win+.</span> <span data-i18n="sc_emoji">Emoji</span></div></div></div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4" data-i18n="sc_web_title">Web</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Ctrl+T</span> <span data-i18n="sc_newtab">New Tab</span></div><div class="flex justify-between"><span class="kbd">Ctrl+W</span> <span data-i18n="sc_closetab">Close Tab</span></div><div class="flex justify-between"><span class="kbd">Ctrl+Shift+T</span> <span data-i18n="sc_reopen">Reopen</span></div><div class="flex justify-between"><span class="kbd">F5</span> <span data-i18n="sc_refresh">Refresh</span></div></div></div>
+                    <!-- New Shortcut Cards -->
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4" data-i18n="sw_office">Office</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Ctrl+S</span> <span data-i18n="sc_save">Save</span></div><div class="flex justify-between"><span class="kbd">Ctrl+P</span> <span data-i18n="sc_print">Print</span></div><div class="flex justify-between"><span class="kbd">Ctrl+B</span> <span data-i18n="sc_bold">Bold</span></div></div></div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4">macOS</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Cmd+Space</span> <span data-i18n="sc_spotlight">Search</span></div><div class="flex justify-between"><span class="kbd">Cmd+Q</span> <span data-i18n="sc_quit">Quit</span></div><div class="flex justify-between"><span class="kbd">Cmd+C</span> <span data-i18n="sc_mac_copy">Copy</span></div></div></div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4" data-i18n="sw_creative">Creative</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Spacebar</span> <span data-i18n="sc_hand">Hand</span></div><div class="flex justify-between"><span class="kbd">Ctrl+T</span> <span data-i18n="sc_transform">Transform</span></div><div class="flex justify-between"><span class="kbd">Ctrl +/-</span> <span data-i18n="sc_zoom">Zoom</span></div></div></div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6"><h3 class="font-bold mb-4">Linux</h3><div class="text-sm space-y-2"><div class="flex justify-between"><span class="kbd">Ctrl+Alt+T</span> Terminal</div><div class="flex justify-between"><span class="kbd">Ctrl+C</span> Kill</div><div class="flex justify-between"><span class="kbd">Tab</span> Auto</div></div></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-                        <h3 class="text-2xl font-bold mb-4" data-i18n="sc_edit_title">แก้ไขข้อความ</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between"><span class="bg-white text-blue-600 px-3 py-1 rounded font-bold">Ctrl + C</span><span data-i18n="sc_copy">คัดลอก</span></div>
-                            <div class="flex justify-between"><span class="bg-white text-blue-600 px-3 py-1 rounded font-bold">Ctrl + V</span><span data-i18n="sc_paste">วาง</span></div>
+            </div>
+        </section>
+
+        <!-- Detail View -->
+        <section id="detail-view" class="page-section bg-white py-8 hidden min-h-screen">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <button onclick="goBack()" class="mb-6 text-blue-600 font-medium flex items-center"><i class="fa-solid fa-arrow-left mr-2"></i> <span data-i18n="btn_back">ย้อนกลับ</span></button>
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+                    <div id="detail-image-container" class="h-64 bg-gray-200 relative">
+                        <img id="detail-image" src="" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6"><h2 id="detail-title" class="text-3xl font-bold text-white"></h2></div>
+                    </div>
+                    <div class="p-6">
+                        <div id="detail-content" class="prose max-w-none text-gray-700 leading-relaxed"></div>
+                        <div class="mt-10 pt-6 border-t border-gray-100 flex justify-end">
+                            <button onclick="goNext()" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium transition flex items-center gap-2 group shadow-lg shadow-blue-200">
+                                <span data-i18n="btn_next">ถัดไป</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="bg-gray-900 text-gray-300 py-12 mt-auto relative z-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-white text-xl font-bold mb-4">ComBasics</p>
-                <div class="flex justify-center space-x-4 mb-6">
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-line"></i></a>
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-youtube"></i></a>
-                </div>
-                <p class="text-sm" data-i18n="footer_copy">&copy; 2025 ComBasics Learning Center.</p>
-            </div>
-        </footer>
-
+        <footer class="bg-gray-900 text-gray-300 py-12 mt-auto text-center"><p>&copy; 2025 ComBasics Learning Center.</p></footer>
     </div>
 
-    <!-- Info Modal -->
-    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden animate-fade-in-up">
-            <img id="modal-image" src="" class="w-full h-48 object-cover hidden sm:block">
-            <div class="p-6">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 id="modal-title" class="text-2xl font-bold text-gray-900"></h3>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-2xl"></i></button>
-                </div>
-                <div id="modal-content" class="text-gray-600 space-y-3 leading-relaxed"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script -->
     <script>
-        // --- TRANSLATION DATA (FULL) ---
         const translations = {
             th: {
                 nav_home: "หน้าแรก", nav_whatis: "คืออะไร?", nav_hardware: "ฮาร์ดแวร์", nav_software: "ซอฟต์แวร์", nav_troubleshoot: "แก้ปัญหา", nav_shortcuts: "คีย์ลัด",
-                hero_badge: "✨ แหล่งเรียนรู้สำหรับมือใหม่", hero_title: "คอมพิวเตอร์<br>เรื่องง่ายกว่าที่คิด", hero_desc: "เรียนรู้ส่วนประกอบ การทำงาน และเคล็ดลับการใช้งานคอมพิวเตอร์พื้นฐาน ครบจบในที่เดียว", btn_view_content: "ดูเนื้อหาทั้งหมด",
+                hero_title: "คอมพิวเตอร์<br>เรื่องง่ายกว่าที่คิด", hero_desc: "เรียนรู้ส่วนประกอบ การทำงาน และเคล็ดลับการใช้งานคอมพิวเตอร์พื้นฐาน ครบจบในที่เดียว", hero_badge: "✨ แหล่งเรียนรู้สำหรับมือใหม่", btn_view_content: "ดูเนื้อหาทั้งหมด",
                 content_title: "ในเว็บไซต์นี้มีอะไรบ้าง?", content_subtitle: "เลือกหัวข้อที่คุณสนใจเพื่อเริ่มเรียนรู้ได้เลย",
                 card1_title: "1. คอมพิวเตอร์คืออะไร?", card1_desc: "ปูพื้นฐานความเข้าใจว่าคอมพิวเตอร์ทำงานอย่างไร",
                 card2_title: "2. รู้จักฮาร์ดแวร์", card2_desc: "เจาะลึกอุปกรณ์ที่จับต้องได้ เช่น CPU, RAM",
                 card3_title: "3. โลกของซอฟต์แวร์", card3_desc: "แยกแยะประเภทโปรแกรมต่างๆ และระบบปฏิบัติการ",
                 card4_title: "4. แก้ปัญหา & เทคนิค", card4_desc: "วิธีแก้ปัญหาคอมฯ เบื้องต้นและคีย์ลัด",
-                whatis_title: "คอมพิวเตอร์ทำงานอย่างไร?", whatis_subtitle: "หลักการทำงานของคอมพิวเตอร์คล้ายกับสมองมนุษย์",
+                whatis_title: "คอมพิวเตอร์ทำงานอย่างไร?", whatis_subtitle: "หลักการทำงานพื้นฐาน 4 ขั้นตอน (IPOS Cycle)",
+                click_to_view: "คลิกที่หัวข้อเพื่อดูรายละเอียด",
                 step1_title: "1. รับข้อมูล (Input)", step1_desc: "รับคำสั่งผ่านอุปกรณ์ เช่น คีย์บอร์ด",
                 step2_title: "2. ประมวลผล (Process)", step2_desc: "CPU คิดคำนวณตามคำสั่ง",
-                step3_title: "3. แสดงผล (Output)", step3_desc: "แสดงผลลัพธ์ผ่านหน้าจอ",
+                step3_title: "4. แสดงผล (Output)", step3_desc: "แสดงผลลัพธ์ผ่านหน้าจอ",
+                step4_title: "3. จัดเก็บ (Storage)", step4_desc: "บันทึกข้อมูลลง SSD/HDD เพื่อใช้ภายหลัง",
                 hardware_title: "ฮาร์ดแวร์ (Hardware)", hardware_subtitle: "อุปกรณ์ที่จับต้องได้",
-                filter_all: "ทั้งหมด", filter_process: "ประมวลผล", filter_memory: "ความจำ", filter_peripheral: "อุปกรณ์ต่อพ่วง", filter_os: "ระบบปฏิบัติการ", filter_apps: "แอพพลิเคชัน",
+                filter_all: "ทั้งหมด", filter_process: "ประมวลผล", filter_memory: "ความจำ", filter_peripheral: "อุปกรณ์ต่อพ่วง", filter_accessory: "อุปกรณ์เสริม",
+                filter_os: "ซอฟต์แวร์ระบบ", filter_apps: "ซอฟต์แวร์ประยุกต์",
                 software_title: "ซอฟต์แวร์ (Software)",
+                hw_cpu: "CPU", hw_mb: "Mainboard", hw_gpu: "GPU", hw_psu: "Power Supply", 
+                hw_ram: "RAM", hw_storage: "SSD/HDD", hw_monitor: "Monitor", hw_mousekey: "Mouse & Key",
+                hw_otg: "OTG Adapter", hw_cable: "Data Cable", hw_win: "Windows", hw_browser: "Web Browser", hw_linux: "Linux (ลินุกซ์)",
                 item_cpu_short: "สมองของคอมพิวเตอร์", item_mb_short: "แผงวงจรหลัก", item_ram_short: "ความจำชั่วคราว", item_storage_short: "ความจำถาวร",
+                item_gpu_short: "การ์ดจอประมวลผลภาพ", item_psu_short: "ตัวจ่ายไฟให้เครื่อง", item_monitor_short: "หน้าจอแสดงผล", item_mousekey_short: "อุปกรณ์สั่งงาน",
                 item_win_short: "ระบบปฏิบัติการยอดนิยม", item_browser_short: "ประตูสู่โลกอินเทอร์เน็ต",
-                trouble_title: "แก้ปัญหาคอมฯ เบื้องต้น", prob1_title: "เปิดเครื่องไม่ติด", prob1_desc: "เช็คปลั๊กไฟและสายเชื่อมต่อ", prob2_title: "เครื่องช้า", prob2_desc: "ลองรีสตาร์ทเครื่องและลบไฟล์ขยะ",
-                shortcuts_title: "คีย์ลัดน่ารู้", sc_edit_title: "แก้ไขข้อความ", sc_copy: "คัดลอก", sc_paste: "วาง",
+                item_linux_short: "ระบบปฏิบัติการทางเลือก ฟรีและปลอดภัย", item_mac_short: "ระบบปฏิบัติการสำหรับเครื่อง Mac",
+                item_office_short: "โปรแกรมสำนักงาน", item_creative_short: "โปรแกรมกราฟิก/ตัดต่อ", item_utility_short: "โปรแกรมสามัญประจำเครื่อง",
+                item_otg_short: "หัวแปลงเชื่อมต่อมือถือ", item_cable_short: "สายชาร์จและโอนข้อมูล",
+                sw_office: "Office Suite", sw_creative: "Creative Tools", sw_utility: "Utilities",
+                trouble_title: "แก้ปัญหาคอมฯ เบื้องต้น", 
+                prob1_title: "เปิดเครื่องไม่ติด", prob1_desc: "เช็คปลั๊กไฟและสายเชื่อมต่อ", 
+                prob2_title: "เครื่องช้า", prob2_desc: "ลองรีสตาร์ทเครื่องและลบไฟล์ขยะ",
+                prob3_title: "จอฟ้า (Blue Screen)", prob3_desc: "จดรหัส Error แล้วรีสตาร์ท หากเป็นบ่อยอาจเกิดจาก Driver",
+                prob4_title: "ต่อเน็ตไม่ได้", prob4_desc: "ลองปิด-เปิดเราเตอร์เน็ตใหม่",
+                prob5_title: "เสียงไม่ดัง", prob5_desc: "เช็คว่ากด Mute (ปิดเสียง) ไว้ไหม",
+                prob6_title: "โปรแกรมค้าง", prob6_desc: "กด Ctrl + Alt + Delete แล้ว End Task",
+                prob7_title: "เครื่องร้อน/พัดลมดัง", prob7_desc: "ฝุ่นอาจจะอุดตันทางระบายอากาศ",
+                prob8_title: "โดนไวรัส", prob8_desc: "สแกนด้วย Windows Defender",
+                prob9_title: "เครื่องพิมพ์ไม่ออก", prob9_desc: "เช็คสาย USB กระดาษ และหมึก",
+                prob10_title: "เมาส์/คีย์บอร์ด ไม่ขยับ", prob10_desc: "ลองสลับช่องเสียบ USB หรือเปลี่ยนถ่าน",
+                prob11_title: "หน้าจอกระพริบ", prob11_desc: "เช็คสาย HDMI/DP ว่าเสียบแน่นไหม",
+                prob12_title: "เผลอลบไฟล์", prob12_desc: "เปิด Recycle Bin (ถังขยะ) หาไฟล์ที่ลบไป",
+                shortcuts_title: "คีย์ลัดน่ารู้", sc_edit_title: "แก้ไข & จัดการไฟล์", sc_copy: "คัดลอก (Copy)", sc_paste: "วาง (Paste)", sc_undo: "ย้อนกลับ (Undo)", sc_selectall: "เลือกทั้งหมด",
+                sc_sys_title: "ระบบ Windows", sc_desktop: "โชว์หน้า Desktop", sc_switch: "สลับโปรแกรม", sc_lock: "ล็อคหน้าจอ", sc_emoji: "เปิดแผงอีโมจิ",
+                sc_web_title: "ท่องเว็บ (Browser)", sc_newtab: "เปิดแท็บใหม่", sc_closetab: "ปิดแท็บ", sc_reopen: "กู้คืนแท็บล่าสุด", sc_refresh: "รีเฟรชหน้าเว็บ",
+                sc_save: "บันทึก", sc_print: "พิมพ์", sc_bold: "ตัวหนา",
+                sc_hand: "เครื่องมือจับ", sc_transform: "ปรับขนาด", sc_zoom: "ซูม",
+                sc_spotlight: "ค้นหา", sc_quit: "ปิดโปรแกรม", sc_mac_copy: "คัดลอก", sc_mac_shot: "แคปหน้าจอ",
                 footer_copy: "&copy; 2025 ComBasics Learning Center.",
-                filter_accessory: "อุปกรณ์เสริม",
-                item_otg_short: "หัวแปลงเชื่อมต่อมือถือ",
-                item_cable_short: "สายชาร์จและโอนข้อมูล"
+                btn_back: "ย้อนกลับ", btn_next: "ถัดไป", tip_title: "เกร็ดความรู้", tip_desc: "การเลือกอุปกรณ์ที่เหมาะสมจะช่วยให้คอมพิวเตอร์ทำงานได้เต็มประสิทธิภาพและคุ้มค่าที่สุด"
             },
             en: {
                 nav_home: "Home", nav_whatis: "What is?", nav_hardware: "Hardware", nav_software: "Software", nav_troubleshoot: "Fixes", nav_shortcuts: "Shortcuts",
@@ -393,186 +333,661 @@
                 card2_title: "2. Hardware", card2_desc: "Tangible parts like CPU, RAM.",
                 card3_title: "3. Software", card3_desc: "Types of programs and OS.",
                 card4_title: "4. Troubleshooting", card4_desc: "Basic fixes and shortcuts.",
-                whatis_title: "How Computers Work?", whatis_subtitle: "Similar to the human brain, in 3 steps.",
+                whatis_title: "How Computers Work?", whatis_subtitle: "The 4 Basic Steps (IPOS Cycle)",
+                click_to_view: "Click item for details",
                 step1_title: "1. Input", step1_desc: "Receiving commands via keyboard/mouse.",
-                step2_title: "2. Process", step2_desc: "CPU calculates orders.",
-                step3_title: "3. Output", step3_desc: "Displaying results on screen.",
+                step2_title: "2. Process", step2_desc: "CPU calculates instructions.",
+                step3_title: "4. Output", step3_desc: "Displaying results on screen.",
+                step4_title: "3. Storage", step4_desc: "Saving data to SSD/HDD for later use.",
                 hardware_title: "Hardware", hardware_subtitle: "Physical components.",
-                filter_all: "All", filter_process: "Process", filter_memory: "Memory", filter_peripheral: "Peripheral", filter_os: "OS", filter_apps: "Apps",
+                filter_all: "All", filter_process: "Process", filter_memory: "Memory", filter_peripheral: "Peripheral", filter_accessory: "Accessories",
+                filter_os: "System Software", filter_apps: "Applications",
                 software_title: "Software",
+                hw_cpu: "CPU", hw_mb: "Mainboard", hw_gpu: "GPU", hw_psu: "Power Supply", 
+                hw_ram: "RAM", hw_storage: "SSD/HDD", hw_monitor: "Monitor", hw_mousekey: "Mouse & Key",
+                hw_otg: "OTG Adapter", hw_cable: "Data Cable", hw_win: "Windows", hw_browser: "Web Browser", hw_linux: "Linux",
                 item_cpu_short: "The Brain", item_mb_short: "Main Circuit Board", item_ram_short: "Temporary Memory", item_storage_short: "Permanent Storage",
+                item_gpu_short: "Graphics Processing", item_psu_short: "Power Supply Unit", item_monitor_short: "Display Screen", item_mousekey_short: "Input Devices",
                 item_win_short: "Popular OS", item_browser_short: "Internet Gateway",
-                trouble_title: "Basic Troubleshooting", prob1_title: "Won't Turn On", prob1_desc: "Check power plugs and cables.", prob2_title: "Slow PC", prob2_desc: "Try restarting and clearing trash.",
-                shortcuts_title: "Useful Shortcuts", sc_edit_title: "Editing", sc_copy: "Copy", sc_paste: "Paste",
+                item_linux_short: "Free & Secure Open Source OS", item_mac_short: "Operating System for Mac",
+                item_office_short: "Document & Productivity", item_creative_short: "Design & Editing", item_utility_short: "Essential Tools",
+                item_otg_short: "Mobile Adapter", item_cable_short: "Data & Charging Cable",
+                sw_office: "Office Suite", sw_creative: "Creative Tools", sw_utility: "Utilities",
+                trouble_title: "Basic Troubleshooting", prob1_title: "Won't Turn On", prob1_desc: "Check power plugs and cables.", prob2_title: "Slow PC", prob2_desc: "Try restarting.",
+                prob3_title: "Blue Screen (BSOD)", prob3_desc: "Note error code and restart.", prob4_title: "No Internet", prob4_desc: "Restart router.",
+                prob5_title: "No Sound", prob5_desc: "Check mute.", prob6_title: "App Freeze", prob6_desc: "Use Task Manager.",
+                prob7_title: "Overheating", prob7_desc: "Clean dust.", prob8_title: "Virus", prob8_desc: "Scan with Defender.",
+                prob9_title: "Printer Issue", prob9_desc: "Check cables/ink.", prob10_title: "Mouse/Key Stuck", prob10_desc: "Replug USB.",
+                prob11_title: "Screen Flicker", prob11_desc: "Check cables.", prob12_title: "Lost File", prob12_desc: "Check Recycle Bin.",
+                shortcuts_title: "Useful Shortcuts", sc_edit_title: "Edit & Files", sc_copy: "Copy", sc_paste: "Paste", sc_undo: "Undo", sc_selectall: "Select All",
+                sc_sys_title: "Windows System", sc_desktop: "Show Desktop", sc_switch: "Switch Apps", sc_lock: "Lock Screen", sc_emoji: "Emoji Panel",
+                sc_web_title: "Web Browser", sc_newtab: "New Tab", sc_closetab: "Close Tab", sc_reopen: "Reopen Closed Tab", sc_refresh: "Refresh Page",
+                sc_save: "Save", sc_print: "Print", sc_bold: "Bold",
+                sc_hand: "Hand Tool", sc_transform: "Free Transform", sc_zoom: "Zoom",
+                sc_spotlight: "Spotlight Search", sc_quit: "Quit App", sc_mac_copy: "Copy", sc_mac_shot: "Screenshot",
                 footer_copy: "&copy; 2025 ComBasics Learning Center.",
-                filter_accessory: "Accessories",
-                item_otg_short: "Mobile Adapter",
-                item_cable_short: "Charging & Data Cable"
-            },
-            jp: {
-                nav_home: "ホーム", nav_whatis: "基本", nav_hardware: "ハードウェア", nav_software: "ソフトウェア", nav_troubleshoot: "トラブル", nav_shortcuts: "ショートカット",
-                hero_badge: "✨ 初心者向け学習ハブ", hero_title: "パソコン<br>簡単ガイド", hero_desc: "基本構成、操作、ヒントをここで学びましょう。", btn_view_content: "内容を見る",
-                content_title: "サイトの内容", content_subtitle: "トピックを選んで学習を開始。",
-                card1_title: "1. パソコンとは？", card1_desc: "仕組みの基本を理解する。",
-                card2_title: "2. ハードウェア", card2_desc: "CPUやRAMなどの物理的部品。",
-                card3_title: "3. ソフトウェア", card3_desc: "プログラムの種類とOS。",
-                card4_title: "4. トラブル解決", card4_desc: "基本的な修正とショートカット。",
-                whatis_title: "仕組みは？", whatis_subtitle: "人間の脳のように3つのステップで動きます。",
-                step1_title: "1. 入力 (Input)", step1_desc: "キーボード等で命令を受け取る。",
-                step2_title: "2. 処理 (Process)", step2_desc: "CPUが計算・処理する。",
-                step3_title: "3. 出力 (Output)", step3_desc: "画面に結果を表示する。",
-                hardware_title: "ハードウェア", hardware_subtitle: "物理的な装置",
-                filter_all: "すべて", filter_process: "処理", filter_memory: "メモリ", filter_peripheral: "周辺機器", filter_os: "OS", filter_apps: "アプリ",
-                software_title: "ソフトウェア",
-                item_cpu_short: "パソコンの脳", item_mb_short: "メイン基板", item_ram_short: "一時メモリ", item_storage_short: "永続ストレージ",
-                item_win_short: "人気OS", item_browser_short: "ネットへの入り口",
-                trouble_title: "トラブル解決", prob1_title: "起動しない", prob1_desc: "電源プラグを確認してください。", prob2_title: "遅い", prob2_desc: "再起動を試してください。",
-                shortcuts_title: "ショートカット", sc_edit_title: "編集", sc_copy: "コピー", sc_paste: "貼り付け",
-                footer_copy: "&copy; 2025 ComBasics Learning Center.",
-                filter_accessory: "アクセサリー",
-                item_otg_short: "OTGアダプター",
-                item_cable_short: "データケーブル"
-            },
-            cn: {
-                nav_home: "首页", nav_whatis: "是什么", nav_hardware: "硬件", nav_software: "软件", nav_troubleshoot: "故障排除", nav_shortcuts: "快捷键",
-                hero_badge: "✨ 初学者学习中心", hero_title: "电脑基础<br>其实很简单", hero_desc: "了解计算机组件、操作和技巧。", btn_view_content: "查看内容",
-                content_title: "网站内容", content_subtitle: "选择一个主题开始学习。",
-                card1_title: "1. 什么是电脑？", card1_desc: "了解基本工作原理。",
-                card2_title: "2. 硬件", card2_desc: "CPU, RAM 等物理组件。",
-                card3_title: "3. 软件", card3_desc: "程序类型和操作系统。",
-                card4_title: "4. 故障排除", card4_desc: "基本修复和快捷键。",
-                whatis_title: "电脑如何工作？", whatis_subtitle: "像人脑一样，分三步。",
-                step1_title: "1. 输入 (Input)", step1_desc: "通过键盘鼠标接收指令。",
-                step2_title: "2. 处理 (Process)", step2_desc: "CPU 进行计算。",
-                step3_title: "3. 输出 (Output)", step3_desc: "在屏幕上显示结果。",
-                hardware_title: "硬件 (Hardware)", hardware_subtitle: "物理设备",
-                filter_all: "全部", filter_process: "处理", filter_memory: "存储", filter_peripheral: "外设", filter_os: "系统", filter_apps: "应用",
-                software_title: "软件 (Software)",
-                item_cpu_short: "电脑的大脑", item_mb_short: "主板", item_ram_short: "临时内存", item_storage_short: "永久存储",
-                item_win_short: "流行系统", item_browser_short: "互联网入口",
-                trouble_title: "基本故障排除", prob1_title: "无法开机", prob1_desc: "检查电源插头。", prob2_title: "运行缓慢", prob2_desc: "尝试重启或清理垃圾。",
-                shortcuts_title: "常用快捷键", sc_edit_title: "编辑", sc_copy: "复制", sc_paste: "粘贴",
-                footer_copy: "&copy; 2025 ComBasics Learning Center.",
-                filter_accessory: "配件",
-                item_otg_short: "OTG 转接头",
-                item_cable_short: "数据线"
-            },
-            ru: {
-                nav_home: "Главная", nav_whatis: "Основы", nav_hardware: "Железо", nav_software: "Софт", nav_troubleshoot: "Проблемы", nav_shortcuts: "Клавиши",
-                hero_badge: "✨ Центр обучения", hero_title: "Компьютер —<br>это просто", hero_desc: "Изучите основы, компоненты и советы в одном месте.", btn_view_content: "Смотреть",
-                content_title: "Содержание", content_subtitle: "Выберите тему.",
-                card1_title: "1. Что это?", card1_desc: "Основы работы ПК.",
-                card2_title: "2. Железо", card2_desc: "CPU, RAM и др.",
-                card3_title: "3. Софт", card3_desc: "Программы и ОС.",
-                card4_title: "4. Решения", card4_desc: "Исправления и советы.",
-                whatis_title: "Как это работает?", whatis_subtitle: "3 этапа работы.",
-                step1_title: "1. Ввод", step1_desc: "Команды с клавиатуры.",
-                step2_title: "2. Процесс", step2_desc: "Обработка CPU.",
-                step3_title: "3. Вывод", step3_desc: "Результат на экран.",
-                hardware_title: "Оборудование", hardware_subtitle: "Физические части",
-                filter_all: "Все", filter_process: "Процесс", filter_memory: "Память", filter_peripheral: "Периферия", filter_os: "ОС", filter_apps: "Приложения",
-                software_title: "Программное обеспечение",
-                item_cpu_short: "Мозг ПК", item_mb_short: "Материнка", item_ram_short: "ОЗУ", item_storage_short: "Диск",
-                item_win_short: "Популярная ОС", item_browser_short: "Браузер",
-                trouble_title: "Устранение неполадок", prob1_title: "Не включается", prob1_desc: "Проверьте питание.", prob2_title: "Тормозит", prob2_desc: "Перезагрузите ПК.",
-                shortcuts_title: "Горячие клавиши", sc_edit_title: "Редактирование", sc_copy: "Копировать", sc_paste: "Вставить",
-                footer_copy: "&copy; 2025 ComBasics.",
-                filter_accessory: "Аксессуары",
-                item_otg_short: "OTG Адаптер",
-                item_cable_short: "Кабель данных"
-            },
-            hi: {
-                nav_home: "होम", nav_whatis: "क्या है?", nav_hardware: "हार्डवेयर", nav_software: "सॉफ्टवेयर", nav_troubleshoot: "समस्या", nav_shortcuts: "शॉर्टकट",
-                hero_badge: "✨ शुरुआती गाइड", hero_title: "कंप्यूटर<br>बेहद आसान", hero_desc: "कंप्यूटर की मूल बातें और टिप्स सीखें।", btn_view_content: "सामग्री देखें",
-                content_title: "अंदर क्या है?", content_subtitle: "सीखना शुरू करें।",
-                card1_title: "1. कंप्यूटर क्या है?", card1_desc: "यह कैसे काम करता है।",
-                card2_title: "2. हार्डवेयर", card2_desc: "CPU, RAM जैसे पुर्जे।",
-                card3_title: "3. सॉफ्टवेयर", card3_desc: "प्रोग्राम और OS।",
-                card4_title: "4. समस्या निवारण", card4_desc: "सुझाव और शॉर्टकट।",
-                whatis_title: "यह कैसे काम करता है?", whatis_subtitle: "मानव मस्तिष्क की तरह 3 चरण।",
-                step1_title: "1. इनपुट", step1_desc: "कीबोर्ड/माउस से आदेश।",
-                step2_title: "2. प्रक्रिया (Process)", step2_desc: "CPU गणना करता है।",
-                step3_title: "3. आउटपुट", step3_desc: "स्क्रीन पर परिणाम।",
-                hardware_title: "हार्डवेयर", hardware_subtitle: "भौतिक उपकरण",
-                filter_all: "सभी", filter_process: "प्रक्रिया", filter_memory: "मेमोरी", filter_peripheral: "बाहरी", filter_os: "OS", filter_apps: "ऐप्स",
-                software_title: "सॉफ्टवेयर",
-                item_cpu_short: "कंप्यूटर का दिमाग", item_mb_short: "मुख्य बोर्ड", item_ram_short: "अस्थायी मेमोरी", item_storage_short: "स्थायी स्टोरेज",
-                item_win_short: "लोकप्रिय OS", item_browser_short: "इंटरनेट गेटवे",
-                trouble_title: "बुनियादी सुधार", prob1_title: "चालू नहीं हो रहा", prob1_desc: "पावर चेक करें।", prob2_title: "धीमा है", prob2_desc: "रीस्टार्ट करें।",
-                shortcuts_title: "शॉर्टकट", sc_edit_title: "एडिटिंग", sc_copy: "कॉपी", sc_paste: "पेस्ट",
-                footer_copy: "&copy; 2025 ComBasics.",
-                filter_accessory: "सहायक उपकरण",
-                item_otg_short: "OTG एडेप्टर",
-                item_cable_short: "डाटा केबल"
+                btn_back: "Back", btn_next: "Next", tip_title: "Did you know?", tip_desc: "Choosing the right component ensures your computer runs at its best performance."
             }
         };
 
         const modalData = {
-            cpu: { th: {t: "CPU", d: "<p>สมองของคอมพิวเตอร์ คิดคำนวณและประมวลผลคำสั่งทั้งหมด</p>"}, en: {t: "CPU", d: "<p>The brain of the computer. It processes all instructions.</p>"}, jp: {t: "CPU", d: "<p>コンピュータの脳。すべての命令を処理します。</p>"}, cn: {t: "CPU", d: "<p>电脑的大脑，处理所有指令。</p>"}, ru: {t: "ЦП", d: "<p>Мозг компьютера.</p>"}, hi: {t: "CPU", d: "<p>कंप्यूटर का दिमाग।</p>"} },
-            mainboard: { th: {t: "Mainboard", d: "<p>แผงวงจรหลักที่เชื่อมต่อทุกอย่างเข้าด้วยกัน</p>"}, en: {t: "Mainboard", d: "<p>The main circuit board connecting everything.</p>"}, jp: {t: "マザーボード", d: "<p>すべてを接続するメイン基板。</p>"}, cn: {t: "主板", d: "<p>连接一切的主电路板。</p>"}, ru: {t: "Материнская плата", d: "<p>Главная плата.</p>"}, hi: {t: "मेनबोर्ड", d: "<p>सब कुछ जोड़ने वाला मुख्य बोर्ड।</p>"} },
-            ram: { th: {t: "RAM", d: "<p>หน่วยความจำชั่วคราว ข้อมูลหายเมื่อปิดเครื่อง</p>"}, en: {t: "RAM", d: "<p>Temporary memory. Data is lost when powered off.</p>"}, jp: {t: "RAM", d: "<p>一時メモリ。電源を切るとデータが消えます。</p>"}, cn: {t: "内存 (RAM)", d: "<p>临时内存，断电丢失数据。</p>"}, ru: {t: "ОЗУ", d: "<p>Временная память.</p>"}, hi: {t: "RAM", d: "<p>अस्थायी मेमोरी।</p>"} },
-            storage: { th: {t: "SSD/HDD", d: "<p>หน่วยความจำถาวร ใช้เก็บไฟล์และโปรแกรม</p>"}, en: {t: "SSD/HDD", d: "<p>Permanent storage for files and programs.</p>"}, jp: {t: "ストレージ", d: "<p>ファイルやプログラムのための永続ストレージ。</p>"}, cn: {t: "存储 (SSD/HDD)", d: "<p>用于文件和程序的永久存储。</p>"}, ru: {t: "SSD/HDD", d: "<p>Постоянное хранилище.</p>"}, hi: {t: "स्टोरेज", d: "<p>फाइलों के लिए स्थायी स्टोरेज।</p>"} },
-            windows: { th: {t: "Windows", d: "<p>ระบบปฏิบัติการยอดนิยมจาก Microsoft</p>"}, en: {t: "Windows", d: "<p>Popular OS by Microsoft.</p>"}, jp: {t: "Windows", d: "<p>マイクロソフトの人気OS。</p>"}, cn: {t: "Windows", d: "<p>微软的流行操作系统。</p>"}, ru: {t: "Windows", d: "<p>Популярная ОС.</p>"}, hi: {t: "विंडोज़", d: "<p>माइक्रोसॉफ्ट का लोकप्रिय OS।</p>"} },
-            browser: { th: {t: "Web Browser", d: "<p>โปรแกรมสำหรับเข้าเว็บไซต์ เช่น Chrome</p>"}, en: {t: "Web Browser", d: "<p>Program to access websites like Chrome.</p>"}, jp: {t: "ブラウザ", d: "<p>Chromeなどのウェブ閲覧ソフト。</p>"}, cn: {t: "浏览器", d: "<p>访问网站的程序。</p>"}, ru: {t: "Браузер", d: "<p>Для доступа к сайтам.</p>"}, hi: {t: "ब्राउज़र", d: "<p>वेबसाइट एक्सेस करने के लिए।</p>"} },
-            otg: {
-                th: {t: "OTG Adapter (On-The-Go)", d: "<p><strong>คืออะไร:</strong> อุปกรณ์แปลงพอร์ตให้มือถือหรือแท็บเล็ตสามารถเชื่อมต่ออุปกรณ์ USB ได้ (เช่น แฟลชไดร์ฟ, เมาส์)</p><p><strong>วิธีใช้:</strong><ol class='list-decimal list-inside mt-2 space-y-1'><li>เสียบหัวเล็ก (USB-C/Micro) เข้ากับมือถือ</li><li>นำแฟลชไดร์ฟหรืออุปกรณ์ USB มาเสียบที่ช่องด้านหลังของ OTG</li><li>มือถือจะแจ้งเตือนว่าพบอุปกรณ์เชื่อมต่อ พร้อมใช้งานได้ทันที</li></ol>"},
-                en: {t: "OTG Adapter", d: "<p><strong>What is it:</strong> An adapter that allows mobile devices to act as a host for USB peripherals.</p><p><strong>How to use:</strong> Plug the small end into your phone, then plug your USB drive or mouse into the other end.</p>"},
-                jp: {t: "OTGアダプター", d: "<p><strong>概要:</strong> モバイル端末でUSB機器を使用できるようにするアダプター。</p><p><strong>使い方:</strong> 小さい方をスマホに挿し、もう片方にUSBメモリ等を接続します。</p>"},
-                cn: {t: "OTG 转接头", d: "<p><strong>是什么:</strong> 允许手机连接USB设备的转接头。</p><p><strong>用法:</strong> 将小头插入手机，大头连接USB设备。</p>"},
-                ru: {t: "OTG Адаптер", d: "<p><strong>Что это:</strong> Адаптер для подключения USB к телефону.</p><p><strong>Как использовать:</strong> Вставьте в телефон, затем подключите USB-устройство.</p>"},
-                hi: {t: "OTG एडेप्टर", d: "<p><strong>यह क्या है:</strong> मोबाइल को USB डिवाइस से जोड़ने वाला एडेप्टर।</p><p><strong>उपयोग:</strong> इसे फोन में लगाएं, फिर USB डिवाइस कनेक्ट करें।</p>"}
+            // STEP INPUT
+            step_input: {
+                th: { t: "1. การรับข้อมูล (Input)", d: `<p class="mb-4 text-xl font-medium text-gray-800">จุดเริ่มต้นของการทำงาน...</p><h4 class="font-bold text-lg text-gray-900 mb-2">ตัวอย่าง:</h4><ul class="list-disc list-inside"><li>คีย์บอร์ด</li><li>เมาส์</li><li>จอสัมผัส</li><li>ไมโครโฟน</li></ul>` },
+                en: { t: "1. Input", d: `<p class="mb-4 text-xl font-medium text-gray-800">The starting point of operation...</p><h4 class="font-bold text-lg text-gray-900 mb-2">Examples:</h4><ul class="list-disc list-inside"><li>Keyboard</li><li>Mouse</li><li>Touchscreen</li><li>Microphone</li></ul>` },
             },
-            datacable: {
-                th: {t: "Data/Charging Cable", d: "<p><strong>คืออะไร:</strong> สายสำหรับชาร์จไฟและโอนถ่ายข้อมูลระหว่างอุปกรณ์</p><p><strong>วิธีใช้ (สำหรับโอนข้อมูล):</strong><ol class='list-decimal list-inside mt-2 space-y-1'><li>เสียบหัว USB เข้ากับคอมพิวเตอร์</li><li>เสียบอีกด้านเข้ากับมือถือ</li><li>ที่หน้าจอมือถือ เลือกโหมด 'File Transfer' หรือ 'โอนถ่ายไฟล์'</li><li>เปิด My Computer ในคอมฯ จะพบไดรฟ์ของมือถือ</li></ol>"},
-                en: {t: "Data/Charging Cable", d: "<p><strong>What is it:</strong> Cable for charging and transferring data.</p><p><strong>How to use:</strong> Connect USB to PC and the other end to phone. Select 'File Transfer' mode on phone.</p>"},
-                jp: {t: "データケーブル", d: "<p><strong>概要:</strong> 充電およびデータ転送用ケーブル。</p><p><strong>使い方:</strong> PCとスマホを接続し、スマホ側で「ファイル転送」モードを選択します。</p>"},
-                cn: {t: "数据线", d: "<p><strong>是什么:</strong> 用于充电和数据传输。</p><p><strong>用法:</strong> 连接电脑和手机，在手机上选择“传输文件”模式。</p>"},
-                ru: {t: "Кабель данных", d: "<p><strong>Что это:</strong> Кабель для зарядки и данных.</p><p><strong>Как использовать:</strong> Подключите к ПК и телефону. Выберите режим передачи файлов.</p>"},
-                hi: {t: "डाटा केबल", d: "<p><strong>यह क्या है:</strong> चार्जिंग और डेटा ट्रांसफर के लिए केबल।</p><p><strong>उपयोग:</strong> पीसी और फोन को कनेक्ट करें, फोन पर 'फाइल ट्रांसफर' चुनें।</p>"}
-            }
+            // STEP PROCESS
+            step_process: {
+                th: { t: "2. การประมวลผล (Process)", d: `<p class="mb-4 text-xl font-medium text-gray-800">CPU คิดคำนวณตามคำสั่ง</p><h4 class="font-bold text-lg text-gray-900 mb-2">ขั้นตอน:</h4><ul class="list-disc list-inside"><li>รับคำสั่ง (Fetch)</li><li>แปลรหัส (Decode)</li><li>ทำงาน (Execute)</li><li>เก็บผลลัพธ์ (Store)</li></ul>` },
+                en: { t: "2. Process", d: `<p class="mb-4 text-xl font-medium text-gray-800">CPU calculates based on instructions.</p><h4 class="font-bold text-lg text-gray-900 mb-2">Steps:</h4><ul class="list-disc list-inside"><li>Fetch</li><li>Decode</li><li>Execute</li><li>Store</li></ul>` },
+            },
+            // STEP STORAGE
+            step_storage: {
+                th: { t: "3. การจัดเก็บข้อมูล (Storage)", d: `<p class="mb-4 text-xl font-medium text-gray-800">เก็บข้อมูลลง SSD/HDD</p><div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mt-4"><strong>RAM vs Storage:</strong><br>RAM = โต๊ะทำงาน (ชั่วคราว)<br>Storage = ตู้เก็บของ (ถาวร)</div>` },
+                en: { t: "3. Storage", d: `<p class="mb-4 text-xl font-medium text-gray-800">Saving data to SSD/HDD.</p><div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mt-4"><strong>RAM vs Storage:</strong><br>RAM = Workbench (Temporary)<br>Storage = Cabinet (Permanent)</div>` },
+            },
+            // STEP OUTPUT
+            step_output: {
+                th: { t: "4. การแสดงผล (Output)", d: `<p class="mb-4 text-xl font-medium text-gray-800">แสดงผลผ่านจอภาพหรือเสียง</p><h4 class="font-bold text-lg text-gray-900 mb-2">ตัวอย่าง:</h4><ul class="list-disc list-inside"><li>จอภาพ (Monitor)</li><li>ลำโพง (Speaker)</li><li>เครื่องพิมพ์ (Printer)</li></ul>` },
+                en: { t: "4. Output", d: `<p class="mb-4 text-xl font-medium text-gray-800">Display via screen or audio.</p><h4 class="font-bold text-lg text-gray-900 mb-2">Examples:</h4><ul class="list-disc list-inside"><li>Monitor</li><li>Speaker</li><li>Printer</li></ul>` },
+            },
+            
+            // HARDWARE
+            cpu: {
+                th: {
+                    t: "CPU (Central Processing Unit)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">เปรียบเสมือน "สมอง" ของคอมพิวเตอร์ ทำหน้าที่ประมวลผลและควบคุมอุปกรณ์ทุกอย่างในเครื่อง</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">สเปคสำคัญที่ควรรู้:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6 text-sm text-gray-700">
+                            <li><strong>Cores (แกนสมอง):</strong> เปรียบเหมือน "จำนวนคนงาน" ยิ่งเยอะ ยิ่งทำงานหลายอย่างพร้อมกันได้ดี</li>
+                            <li><strong>Threads:</strong> เปรียบเหมือน "จำนวนมือ" ของคนงาน ช่วยให้ทำงานเสร็จไวขึ้น</li>
+                            <li><strong>Clock Speed (GHz):</strong> ความเร็วในการคิด ยิ่งเลขเยอะ ยิ่งประมวลผลไว</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">การเลือกซื้อตามการใช้งาน:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                <h5 class="font-bold text-blue-800 mb-2 text-lg">🔵 Intel Core Series</h5>
+                                <ul class="text-sm space-y-2 text-gray-700">
+                                    <li><strong>Core i3:</strong> งานเอกสาร ดูหนัง เรียนออนไลน์ (ราคาประหยัด)</li>
+                                    <li><strong>Core i5:</strong> เล่นเกมทั่วไป ตัดต่อคลิปสั้นๆ (คุ้มค่า ยอดนิยม)</li>
+                                    <li><strong>Core i7:</strong> เกมกราฟิกสูง สตรีมเกม ตัดต่อ 4K</li>
+                                    <li><strong>Core i9:</strong> งานระดับมืออาชีพ เรนเดอร์ 3D หนักๆ</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                                <h5 class="font-bold text-red-800 mb-2 text-lg">🔴 AMD Ryzen Series</h5>
+                                <ul class="text-sm space-y-2 text-gray-700">
+                                    <li><strong>Ryzen 3:</strong> ราคาประหยัด ใช้งานทั่วไป</li>
+                                    <li><strong>Ryzen 5:</strong> ขวัญใจเกมเมอร์ ราคาจับต้องได้</li>
+                                    <li><strong>Ryzen 7:</strong> ประสิทธิภาพสูง มัลติทาสก์ดีเยี่ยม</li>
+                                    <li><strong>Ryzen 9:</strong> ที่สุดของความแรง สำหรับ Creator</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 text-sm text-gray-700">
+                            <strong class="text-orange-800 text-base block mb-2">🔥 ข้อมูลเชิงลึก (Pro Tips):</strong>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Cache (L3):</strong> หน่วยความจำพิเศษใน CPU ยิ่งเยอะ ยิ่งเล่นเกมลื่น (โดยเฉพาะรุ่น X3D ของ AMD)</li>
+                                <li><strong>Cooling (ระบายความร้อน):</strong> รุ่น i7/i9 หรือ Ryzen 9 ร้อนมาก ควรใช้ชุดน้ำ (Liquid Cooling) หรือซิงค์ลมตัวใหญ่</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                en: {
+                    t: "CPU (Central Processing Unit)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Acts like the "Brain" of the computer, processing instructions and controlling all components.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Key Specs to Know:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6 text-sm text-gray-700">
+                            <li><strong>Cores:</strong> Like the "number of workers". More cores mean better multitasking.</li>
+                            <li><strong>Threads:</strong> Like the "hands" of the workers, helping tasks finish faster.</li>
+                            <li><strong>Clock Speed (GHz):</strong> Thinking speed. Higher numbers mean faster processing.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Series Guide:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                <h5 class="font-bold text-blue-800 mb-2 text-lg">🔵 Intel Core Series</h5>
+                                <ul class="text-sm space-y-2 text-gray-700">
+                                    <li><strong>Core i3:</strong> Office work, movies, online learning (Budget).</li>
+                                    <li><strong>Core i5:</strong> General gaming, basic editing (Best Value/Popular).</li>
+                                    <li><strong>Core i7:</strong> High-end gaming, streaming, 4K editing.</li>
+                                    <li><strong>Core i9:</strong> Professional level, heavy 3D rendering.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                                <h5 class="font-bold text-red-800 mb-2 text-lg">🔴 AMD Ryzen Series</h5>
+                                <ul class="text-sm space-y-2 text-gray-700">
+                                    <li><strong>Ryzen 3:</strong> Budget price, general use.</li>
+                                    <li><strong>Ryzen 5:</strong> Gamer's favorite, affordable.</li>
+                                    <li><strong>Ryzen 7:</strong> High performance, excellent multitasking.</li>
+                                    <li><strong>Ryzen 9:</strong> Ultimate power for Creators.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 text-sm text-gray-700">
+                            <strong class="text-orange-800 text-base block mb-2">🔥 Pro Tips:</strong>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Cache (L3):</strong> Special memory in CPU. More cache means smoother gaming (especially AMD's X3D models).</li>
+                                <li><strong>Cooling:</strong> i7/i9 or Ryzen 9 models run very hot. Use Liquid Cooling or a large Air Cooler.</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            },
+            mainboard: {
+                th: {
+                    t: "Mainboard (เมนบอร์ด)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">แผงวงจรหลักที่เป็น "กระดูกสันหลัง" ของคอมพิวเตอร์ เชื่อมต่ออุปกรณ์ทุกชิ้นเข้าด้วยกัน</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">1. ขนาด (Form Factor):</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>ATX (ใหญ่):</strong> มาตรฐาน ช่องเสียบเยอะ อัปเกรดง่าย ระบายความร้อนดี</li>
+                            <li><strong>mATX (กลาง):</strong> ยอดนิยม ราคาคุ้มค่า ใส่เคสได้เกือบทุกรุ่น ช่องเสียบน้อยกว่า ATX นิดหน่อย</li>
+                            <li><strong>ITX (เล็กจิ๋ว):</strong> สำหรับเคสเล็กพกพา (Mini PC) ราคาแพงและจัดสายยาก</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">2. ชิปเซ็ต (Chipset) - ตัวกำหนดสเปค:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 space-y-2 mb-4">
+                            <p>🔴 <strong>รหัส Z (Intel) / X (AMD):</strong> รุ่นท็อป ฟีเจอร์ครบ Overclock ได้ พอร์ตเชื่อมต่อเยอะสุด</p>
+                            <p>🔵 <strong>รหัส B (Intel/AMD):</strong> รุ่นกลาง ยอดนิยม คุ้มค่าที่สุด ฟีเจอร์เพียงพอสำหรับคนทั่วไปและเกมเมอร์</p>
+                            <p>⚪ <strong>รหัส H (Intel) / A (AMD):</strong> รุ่นประหยัด ตัดฟีเจอร์บางอย่างออก ใส่แรมได้น้อยกว่า</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                            <strong>💡 Pro Tip:</strong> อย่าลืมเช็ค "Socket" (เช่น LGA1700, AM5) ว่าตรงกับ CPU ที่จะซื้อไหม ไม่งั้นใส่ไม่ได้!
+                        </div>
+                    `
+                },
+                en: {
+                    t: "Mainboard (Motherboard)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">The main circuit board acting as the "backbone" of the computer, connecting all devices together.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">1. Form Factor (Size):</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>ATX (Large):</strong> Standard, many slots, easy to upgrade, good airflow.</li>
+                            <li><strong>mATX (Medium):</strong> Popular, best value, fits most cases, slightly fewer slots than ATX.</li>
+                            <li><strong>ITX (Tiny):</strong> For portable small cases (Mini PC), expensive and hard to cable manage.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">2. Chipset - Determines Specs:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 space-y-2 mb-4">
+                            <p>🔴 <strong>Code Z (Intel) / X (AMD):</strong> Top tier, full features, supports Overclocking, max ports.</p>
+                            <p>🔵 <strong>Code B (Intel/AMD):</strong> Mid-range, popular, best value, sufficient features for general users and gamers.</p>
+                            <p>⚪ <strong>Code H (Intel) / A (AMD):</strong> Budget tier, cuts some features, fewer RAM slots.</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                            <strong>💡 Pro Tip:</strong> Don't forget to check the "Socket" (e.g., LGA1700, AM5) matches the CPU you are buying, or it won't fit!
+                        </div>
+                    `
+                }
+            },
+            ram: {
+                th: {
+                    t: "RAM (แรม)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">หน่วยความจำชั่วคราว เปรียบเหมือน "โต๊ะทำงาน" ยิ่งกว้างยิ่งวางงานได้เยอะ ทำหลายอย่างพร้อมกันได้ลื่น</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">ความจุที่แนะนำ (Capacity):</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>8 GB:</strong> ขั้นต่ำสำหรับยุคนี้ ใช้งานทั่วไป พิมพ์งาน ดูหนัง</li>
+                            <li><strong>16 GB:</strong> มาตรฐานปัจจุบัน เล่นเกมลื่น ตัดต่อวิดีโอทั่วไปได้ (แนะนำ!)</li>
+                            <li><strong>32 GB+:</strong> สำหรับสตรีมเมอร์ กราฟิกมือโปร หรือคนเปิด Chrome 100 แท็บ</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">ชนิดแรม (Type):</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 space-y-2 mb-4">
+                            <p>🔹 <strong>DDR4:</strong> ราคาประหยัด ประสิทธิภาพยังดีมากสำหรับเกมส่วนใหญ่</p>
+                            <p>🔹 <strong>DDR5:</strong> รุ่นใหม่ล่าสุด เร็วแรง แต่อุปกรณ์โดยรวมจะแพงกว่า (อนาคตไกล)</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                            <strong>💡 Pro Tip:</strong> ควรใส่แรมแบบ "คู่" (Dual Channel) เช่น ใส่ 8GB สองตัว (รวม 16GB) จะทำงานเร็วกว่าใส่ 16GB ตัวเดียว!
+                        </div>
+                    `
+                },
+                en: {
+                    t: "RAM (Random Access Memory)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Temporary memory. Acts like a "Desk"; the wider it is, the more work you can place, allowing smooth multitasking.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Recommended Capacity:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>8 GB:</strong> Minimum for this era. General use, typing, watching movies.</li>
+                            <li><strong>16 GB:</strong> Current standard. Smooth gaming, general video editing (Recommended!).</li>
+                            <li><strong>32 GB+:</strong> For streamers, professional graphics, or people opening 100 Chrome tabs.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">RAM Type:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 space-y-2 mb-4">
+                            <p>🔹 <strong>DDR4:</strong> Budget-friendly, performance is still great for most games.</p>
+                            <p>🔹 <strong>DDR5:</strong> Latest model, fast and strong, but overall equipment is more expensive (Future proof).</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                            <strong>💡 Pro Tip:</strong> You should install RAM in "Pairs" (Dual Channel), e.g., two 8GB sticks (Total 16GB) works faster than a single 16GB stick!
+                        </div>
+                    `
+                }
+            },
+            storage: {
+                th: {
+                    t: "Storage (ตัวเก็บข้อมูล SSD/HDD)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">พื้นที่เก็บข้อมูลถาวร ไฟล์ไม่หายเมื่อปิดเครื่อง เลือกให้ถูกประเภทชีวิตจะดีขึ้นมาก</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">ประเภทต่างๆ:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-sm text-gray-700 mb-4">
+                            <div>
+                                <strong class="text-green-700">🚀 M.2 NVMe SSD (แนะนำสุดๆ):</strong>
+                                <p>เร็วที่สุด! เสียบลงบนเมนบอร์ดโดยตรง เปิดคอมติดในไม่กี่วินาที โหลดเกมไวมาก</p>
+                            </div>
+                            <div>
+                                <strong class="text-blue-700">💾 SATA SSD:</strong>
+                                <p>เร็วกว่า HDD แต่ช้ากว่า NVMe รูปร่างเป็นกล่องเหลี่ยม 2.5 นิ้ว</p>
+                            </div>
+                            <div>
+                                <strong class="text-gray-700">💿 HDD (Hard Disk):</strong>
+                                <p>จานหมุนรุ่นเก่า ช้า เสียงดัง แต่ราคาถูกและจุได้เยอะ เหมาะไว้เก็บไฟล์รูป/วิดีโอเก่าๆ</p>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                            <strong>💡 สูตรยอดนิยม:</strong> ใช้ M.2 NVMe (250GB-500GB) ลง Windows และโปรแกรมหลัก + ใช้ HDD (1TB-2TB) เก็บไฟล์งานและรูป
+                        </div>
+                    `
+                },
+                en: {
+                    t: "Storage (SSD/HDD)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Permanent storage space. Files are not lost when power is off. Choosing the right type improves life significantly.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Types:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-sm text-gray-700 mb-4">
+                            <div>
+                                <strong class="text-green-700">🚀 M.2 NVMe SSD (Highly Recommended):</strong>
+                                <p>Fastest! Plugs directly onto the motherboard. Boots PC in seconds, loads games very fast.</p>
+                            </div>
+                            <div>
+                                <strong class="text-blue-700">💾 SATA SSD:</strong>
+                                <p>Faster than HDD but slower than NVMe. Shaped like a 2.5-inch box.</p>
+                            </div>
+                            <div>
+                                <strong class="text-gray-700">💿 HDD (Hard Disk):</strong>
+                                <p>Old spinning disk model. Slow, noisy, but cheap and high capacity. Good for storing old photos/videos.</p>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800">
+                            <strong>💡 Popular Formula:</strong> Use M.2 NVMe (250GB-500GB) for Windows and main programs + Use HDD (1TB-2TB) for work files and photos.
+                        </div>
+                    `
+                }
+            },
+            gpu: {
+                th: {
+                    t: "GPU (การ์ดจอ)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">หน่วยประมวลผลกราฟิก หัวใจสำคัญสำหรับคนเล่นเกม ตัดต่อวิดีโอ และงาน 3D</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">ค่ายไหนดี?</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>NVIDIA (GeForce RTX):</strong> ยอดนิยม ฟีเจอร์ครบ (DLSS, Ray Tracing) ไดรเวอร์เสถียร</li>
+                            <li><strong>AMD (Radeon RX):</strong> ราคาคุ้มค่ากว่าในสเปคใกล้กัน แรมการ์ดจอ (VRAM) มักให้มาเยอะกว่า</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">เลือกตามความละเอียดจอ:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 space-y-2 mb-4">
+                            <p>🖥️ <strong>1080p (Full HD):</strong> RTX 4060 / RX 7600</p>
+                            <p>🖥️ <strong>1440p (2K):</strong> RTX 4070 / RX 7800 XT</p>
+                            <p>🖥️ <strong>2160p (4K):</strong> RTX 4080/4090 / RX 7900 XTX</p>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 text-sm text-gray-700">
+                            <strong class="text-orange-800 text-base block mb-2">🔥 ข้อมูลเชิงลึก (Pro Tips):</strong>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Ray Tracing:</strong> เทคโนโลยีจำลองแสงเงาสมจริง (NVIDIA ทำได้ดีกว่า)</li>
+                                <li><strong>DLSS / FSR:</strong> AI ช่วยขยายภาพให้คมชัดแต่กินสเปคน้อยลง ทำให้ได้เฟรมเรตพุ่งสูงขึ้น</li>
+                                <li><strong>VRAM:</strong> ยิ่งเยอะ ยิ่งรองรับเกมภาพสวยๆ และความละเอียดสูงได้ดี</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                en: {
+                    t: "GPU (Graphics Card)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Graphics Processing Unit. The heart for gamers, video editors, and 3D work.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Which Brand?</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>NVIDIA (GeForce RTX):</strong> Popular, full features (DLSS, Ray Tracing), stable drivers.</li>
+                            <li><strong>AMD (Radeon RX):</strong> Better value for similar specs, often gives more VRAM.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Choose by Screen Resolution:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 space-y-2 mb-4">
+                            <p>🖥️ <strong>1080p (Full HD):</strong> RTX 4060 / RX 7600</p>
+                            <p>🖥️ <strong>1440p (2K):</strong> RTX 4070 / RX 7800 XT</p>
+                            <p>🖥️ <strong>2160p (4K):</strong> RTX 4080/4090 / RX 7900 XTX</p>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 text-sm text-gray-700">
+                            <strong class="text-orange-800 text-base block mb-2">🔥 Pro Tips:</strong>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Ray Tracing:</strong> Realistic lighting simulation technology (NVIDIA does it better).</li>
+                                <li><strong>DLSS / FSR:</strong> AI upscaling helps sharpen images while using less specs, boosting frame rates.</li>
+                                <li><strong>VRAM:</strong> The more you have, the better support for beautiful games and high resolutions.</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            },
+            psu: {
+                th: {
+                    t: "Power Supply (PSU)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">หัวใจที่สูบฉีดไฟไปเลี้ยงอุปกรณ์ทุกชิ้น ห้ามงกกับชิ้นส่วนนี้เด็ดขาด!</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">วิธีเลือกซื้อ:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>Watt (วัตต์):</strong> คำนวณตามสเปคเครื่อง (เผื่อไว้ 100-200W จะดีมาก) คอมทั่วไปใช้ 650W-750W ก็เพียงพอ</li>
+                            <li><strong>80 Plus:</strong> มาตรฐานประหยัดไฟ ยิ่งเกรดสูงยิ่งจ่ายไฟนิ่ง (White < Bronze < Gold < Platinum) แนะนำ <strong>80+ Bronze</strong> ขึ้นไป</li>
+                            <li><strong>Modular:</strong> แบบถอดสายได้ ช่วยให้จัดสายในเคสง่าย ไม่รก</li>
+                        </ul>
+                        <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-sm text-red-800">
+                            <strong>⚠️ เตือนภัย:</strong> PSU ราคาถูกที่ไม่ได้มาตรฐาน อาจทำให้อุปกรณ์อื่นพังหรือเกิดไฟไหม้ได้
+                        </div>
+                    `
+                },
+                en: {
+                    t: "Power Supply (PSU)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">The heart that pumps power to all devices. Do not be stingy with this part!</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Buying Guide:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>Watt:</strong> Calculate based on specs (100-200W headroom is good). General PCs use 650W-750W is enough.</li>
+                            <li><strong>80 Plus:</strong> Efficiency standard, higher grade means stable power (White < Bronze < Gold < Platinum). Recommend <strong>80+ Bronze</strong> or higher.</li>
+                            <li><strong>Modular:</strong> Detachable cables help with cable management, less clutter.</li>
+                        </ul>
+                        <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-sm text-red-800">
+                            <strong>⚠️ Warning:</strong> Cheap, non-standard PSUs can damage other components or cause fires.
+                        </div>
+                    `
+                }
+            },
+            monitor: {
+                th: {
+                    t: "Monitor (จอมอนิเตอร์)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">หน้าต่างสู่โลกดิจิทัล เลือกจอให้เหมาะกับงานที่ทำ</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">ประเภทของพาเนล (Panel Type):</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>IPS:</strong> สีสดใส มุมมองกว้าง เหมาะกับงานกราฟิกและเล่นเกมภาพสวย (แนะนำ!)</li>
+                            <li><strong>TN:</strong> สีไม่ค่อยสด มุมมองแคบ แต่ตอบสนองไวมาก (Response Time ต่ำ) เหมาะกับนักแข่งเกมยิง (FPS)</li>
+                            <li><strong>VA:</strong> คอนทราสต์สูง สีดำสนิท เหมาะดูหนังในห้องมืด</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Refresh Rate (Hz):</h4>
+                        <p class="text-sm text-gray-700 mb-2">คือค่าความลื่นไหลของภาพ จอทั่วไป 60Hz แต่ถ้าเล่นเกมแนะนำ 144Hz ขึ้นไป จะเห็นความต่างชัดเจน</p>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 text-sm text-gray-700">
+                            <strong class="text-orange-800 text-base block mb-2">🔥 ข้อมูลเชิงลึก (Pro Tips):</strong>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Response Time (ms):</strong> ยิ่งน้อยยิ่งดี (เช่น 1ms หรือ 0.5ms) เพื่อลดภาพเบลอเวลาเคลื่อนไหวเร็วๆ</li>
+                                <li><strong>Sync Tech:</strong> G-Sync / FreeSync ช่วยป้องกันภาพฉีกขาด (Screen Tearing)</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                en: {
+                    t: "Monitor",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Window to the digital world. Choose a screen that fits your work.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Panel Types:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>IPS:</strong> Vivid colors, wide viewing angles. Good for graphics and beautiful games (Recommended!).</li>
+                            <li><strong>TN:</strong> Colors not vivid, narrow angles, but very fast response (Low Response Time). Good for FPS eSports gamers.</li>
+                            <li><strong>VA:</strong> High contrast, deep blacks. Good for watching movies in dark rooms.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Refresh Rate (Hz):</h4>
+                        <p class="text-sm text-gray-700 mb-2">Image smoothness value. General screens 60Hz, but for gaming recommend 144Hz+ to see clear difference.</p>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 text-sm text-gray-700">
+                            <strong class="text-orange-800 text-base block mb-2">🔥 Pro Tips:</strong>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Response Time (ms):</strong> Lower is better (e.g. 1ms or 0.5ms) to reduce motion blur.</li>
+                                <li><strong>Sync Tech:</strong> G-Sync / FreeSync helps prevent Screen Tearing.</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            },
+            mousekey: {
+                th: {
+                    t: "Mouse & Keyboard (อุปกรณ์สั่งงาน)",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">อาวุธคู่กายสำหรับสั่งงานคอมพิวเตอร์</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">คีย์บอร์ด (Keyboard):</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <p class="mb-2"><strong>Mechanical Keyboard:</strong> ทนทาน ฟิลลิ่งการกดดี เปลี่ยนสวิตช์ได้</p>
+                            <ul class="list-disc list-inside pl-4">
+                                <li>🔵 <strong>Blue Switch:</strong> เสียงดังคลิกๆ พิมพ์มันส์</li>
+                                <li>🔴 <strong>Red Switch:</strong> เงียบ กดนิ่ม ตอบสนองไว (เหมาะเล่นเกม)</li>
+                                <li>🟤 <strong>Brown Switch:</strong> ลูกผสม มีแรงต้านนิดๆ เสียงไม่ดังมาก</li>
+                            </ul>
+                        </div>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">เมาส์ (Mouse):</h4>
+                        <p class="text-sm text-gray-700">ควรดูค่า <strong>DPI</strong> (ความไวเมาส์) ที่ปรับได้ และรูปทรงที่เข้ามือ (Ergonomic) ถ้าเล่นเกมแนะนำแบบมีสาย หรือไร้สายระบบ 2.4GHz (Latency ต่ำ)</p>
+                    `
+                },
+                en: {
+                    t: "Mouse & Keyboard",
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Main weapons for controlling the computer.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Keyboard:</h4>
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <p class="mb-2"><strong>Mechanical Keyboard:</strong> Durable, good typing feel, swappable switches.</p>
+                            <ul class="list-disc list-inside pl-4">
+                                <li>🔵 <strong>Blue Switch:</strong> Clicky loud sound, fun to type.</li>
+                                <li>🔴 <strong>Red Switch:</strong> Quiet, soft press, fast response (Good for gaming).</li>
+                                <li>🟤 <strong>Brown Switch:</strong> Hybrid, slight tactile bump, not too loud.</li>
+                            </ul>
+                        </div>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Mouse:</h4>
+                        <p class="text-sm text-gray-700">Look for adjustable <strong>DPI</strong> (sensitivity) and ergonomic shape. For gaming, recommend wired or 2.4GHz wireless (Low Latency).</p>
+                    `
+                }
+            },
+            
+            otg: { 
+                th: {
+                    t: "OTG Adapter (On-The-Go)", 
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">ตัวช่วยแปลงพอร์ตให้มือถือ/แท็บเล็ต เชื่อมต่ออุปกรณ์ USB ได้</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">ประโยชน์:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li>เสียบ Flash Drive เพื่อโอนรูป/ไฟล์เข้ามือถือได้ทันที</li>
+                            <li>ต่อเมาส์/คีย์บอร์ด มาพิมพ์งานบนมือถือ</li>
+                            <li>ต่อจอยเกม USB เล่นเกมบนมือถือ</li>
+                        </ul>
+                        <p class="text-sm text-blue-800"><strong>Note:</strong> ต้องเลือกหัวให้ตรงกับมือถือ (USB-C หรือ Micro-USB)</p>
+                    `
+                }, 
+                en: {
+                    t: "OTG Adapter (On-The-Go)", 
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Helper to convert ports so mobile/tablets can connect USB devices.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">Benefits:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li>Plug in Flash Drive to transfer photos/files to mobile instantly.</li>
+                            <li>Connect Mouse/Keyboard to type on mobile.</li>
+                            <li>Connect USB Gamepad to play games on mobile.</li>
+                        </ul>
+                        <p class="text-sm text-blue-800"><strong>Note:</strong> Must choose connector matching mobile (USB-C or Micro-USB).</p>
+                    `
+                } 
+            },
+            datacable: { 
+                th: {
+                    t: "Data Cable (สายชาร์จ/โอนข้อมูล)", 
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">สายที่ใช้ทั้งชาร์จไฟและส่งข้อมูลระหว่างอุปกรณ์</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">สิ่งที่ต้องดู:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>การรองรับไฟ (Amp):</strong> สาย 5A ชาร์จได้เร็วกว่า 3A (รองรับ Super Charge)</li>
+                            <li><strong>ความเร็วโอนข้อมูล:</strong> สายทั่วไปแค่ 480Mbps แต่สายคุณภาพสูง (USB 3.0+) จะเร็วกว่ามาก</li>
+                            <li><strong>ความทนทาน:</strong> สายถัก (Braided) จะทนทานกว่าสายยางพลาสติก</li>
+                        </ul>
+                    `
+                }, 
+                en: {
+                    t: "Data Cable", 
+                    d: `
+                        <p class="mb-4 text-xl font-medium text-gray-800">Cable used for both charging and data transfer between devices.</p>
+                        <h4 class="font-bold text-lg text-gray-900 mb-2">What to look for:</h4>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4 text-sm text-gray-700">
+                            <li><strong>Power Support (Amp):</strong> 5A cables charge faster than 3A (Support Super Charge).</li>
+                            <li><strong>Data Speed:</strong> General cables only 480Mbps, but high quality (USB 3.0+) are much faster.</li>
+                            <li><strong>Durability:</strong> Braided cables are more durable than plastic rubber cables.</li>
+                        </ul>
+                    `
+                } 
+            },
+            
+            // SOFTWARE (Updated EN)
+            windows: { 
+                th: {t:"Windows (วินโดวส์)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">OS ยอดนิยมอันดับ 1 ของโลก รองรับเกมและโปรแกรมแทบทุกอย่าง</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">ข้อดี (Pros):</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li><strong>Gaming King:</strong> เล่นเกมได้ดีที่สุด รองรับทุกเกม</li><li><strong>Compatibility:</strong> ใช้กับฮาร์ดแวร์ได้หลากหลาย หาไดรเวอร์ง่าย</li><li><strong>Software:</strong> มีโปรแกรมให้เลือกใช้มหาศาล</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">ข้อเสีย (Cons):</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li><strong>Virus:</strong> เสี่ยงต่อไวรัสและมัลแวร์มากที่สุด</li><li><strong>Price:</strong> ลิขสิทธิ์แท้มีราคาสูง</li><li><strong>Updates:</strong> บางครั้งอัปเดตแล้วเครื่องช้าลงหรือมีบั๊ก</li></ul>"}, 
+                en: {t:"Windows", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">World's #1 popular OS, supports almost every game and program.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Pros:</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li><strong>Gaming King:</strong> Best for gaming, supports all games.</li><li><strong>Compatibility:</strong> Works with diverse hardware, easy to find drivers.</li><li><strong>Software:</strong> Massive selection of programs available.</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">Cons:</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li><strong>Virus:</strong> Most prone to viruses and malware.</li><li><strong>Price:</strong> Genuine license is expensive.</li><li><strong>Updates:</strong> Sometimes updates slow down the machine or have bugs.</li></ul>"} 
+            },
+            linux: { 
+                th: {t:"Linux (ลินุกซ์)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">ระบบปฏิบัติการแบบ \"Open Source\" ที่เปิดให้ใช้ฟรี! มีความปลอดภัยสูง</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">ข้อดี (Pros):</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li><strong>ฟรี 100%:</strong> ไม่มีค่าใช้จ่ายแฝง</li><li><strong>Secure:</strong> ปลอดภัยสูง ไวรัสน้อยมาก</li><li><strong>Performance:</strong> กินสเปคน้อย คอมเก่าก็ลื่น</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">ข้อเสีย (Cons):</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li><strong>Learning Curve:</strong> ใช้งานยากสำหรับมือใหม่ (ต้องใช้ Terminal บ้าง)</li><li><strong>Gaming:</strong> เล่นเกมดังๆ บางเกมไม่ได้</li><li><strong>Software:</strong> โปรแกรมเฉพาะทาง (Adobe, Office) ไม่รองรับ</li></ul>"}, 
+                en: {t:"Linux", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">Open Source OS that is free to use! Highly secure.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Pros:</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li><strong>100% Free:</strong> No hidden costs.</li><li><strong>Secure:</strong> High security, very few viruses.</li><li><strong>Performance:</strong> Low spec usage, old computers run smooth.</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">Cons:</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li><strong>Learning Curve:</strong> Hard to use for beginners (Need Terminal sometimes).</li><li><strong>Gaming:</strong> Cannot play some famous games.</li><li><strong>Software:</strong> Specialized programs (Adobe, Office) not supported.</li></ul>"} 
+            },
+            macos: { 
+                th: {t:"macOS (แมคโอเอส)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">ระบบปฏิบัติการของเครื่อง Mac จาก Apple ขึ้นชื่อเรื่องความเสถียร</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">ข้อดี (Pros):</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li><strong>Ecosystem:</strong> ทำงานร่วมกับ iPhone/iPad ได้ดีเยี่ยม</li><li><strong>Stable:</strong> เสถียรมาก เครื่องไม่ค่อยค้าง</li><li><strong>Design:</strong> สวยงาม ใช้งานง่าย หน้าจอคมชัด</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">ข้อเสีย (Cons):</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li><strong>Price:</strong> ราคาเครื่อง Mac สูงมาก</li><li><strong>Gaming:</strong> ไม่เหมาะกับการเล่นเกม</li><li><strong>Upgrade:</strong> อัปเกรดอุปกรณ์ (RAM/SSD) เองยากหรือไม่ได้เลย</li></ul>"}, 
+                en: {t:"macOS", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">OS of Mac machines from Apple. Famous for stability.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Pros:</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li><strong>Ecosystem:</strong> Works excellently with iPhone/iPad.</li><li><strong>Stable:</strong> Very stable, machine rarely freezes.</li><li><strong>Design:</strong> Beautiful, easy to use, sharp screen.</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">Cons:</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li><strong>Price:</strong> Mac machines are very expensive.</li><li><strong>Gaming:</strong> Not suitable for gaming.</li><li><strong>Upgrade:</strong> Hard or impossible to upgrade devices (RAM/SSD) yourself.</li></ul>"} 
+            },
+            browser: { 
+                th: {t:"Web Browser (เว็บเบราว์เซอร์)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">ประตูสู่โลกอินเทอร์เน็ต</p><h4 class=\"font-bold text-lg text-blue-800 mb-2\">ตัวเลือกยอดนิยม:</h4><ul class=\"list-disc list-inside bg-blue-50 p-4 rounded-xl border border-blue-200 mb-4 text-sm text-gray-700\"><li><strong>Google Chrome:</strong> ยอดนิยมที่สุด ส่วนเสริมเยอะ แต่กินแรม</li><li><strong>Microsoft Edge:</strong> เร็ว เบา มาพร้อม Windows ใช้ engine เดียวกับ Chrome</li><li><strong>Firefox:</strong> เน้นความเป็นส่วนตัว (Privacy) ไม่กินสเปค</li></ul>"}, 
+                en: {t:"Web Browser", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">Gateway to the internet world.</p><h4 class=\"font-bold text-lg text-blue-800 mb-2\">Popular Choices:</h4><ul class=\"list-disc list-inside bg-blue-50 p-4 rounded-xl border border-blue-200 mb-4 text-sm text-gray-700\"><li><strong>Google Chrome:</strong> Most popular, many extensions, but eats RAM.</li><li><strong>Microsoft Edge:</strong> Fast, light, comes with Windows, uses same engine as Chrome.</li><li><strong>Firefox:</strong> Focus on privacy, doesn't eat specs.</li></ul>"} 
+            },
+            office: { 
+                th: {t:"Office Suite (โปรแกรมสำนักงาน)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">สำหรับงานเอกสารและการนำเสนอ</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">ข้อดี (Pros):</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li>เป็นมาตรฐานโลก (Word, Excel) ส่งไฟล์ให้ใครก็เปิดได้</li><li>ฟีเจอร์ครบครันที่สุดสำหรับการทำงาน</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">ข้อเสีย (Cons):</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li>มีค่าใช้จ่ายรายปี (Microsoft 365)</li><li>ถ้าใช้ของฟรี (Google Docs) ฟอร์แมตอาจเพี้ยนบ้าง</li></ul>"}, 
+                en: {t:"Office Suite", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">For documents and presentations.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Pros:</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li>World standard (Word, Excel), send files to anyone to open.</li><li>Most complete features for work.</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">Cons:</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li>Annual cost (Microsoft 365).</li><li>If using free versions (Google Docs), format might be slightly off.</li></ul>"} 
+            },
+            creative: { 
+                th: {t:"Creative Tools (กราฟิก/ตัดต่อ)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">สำหรับงานออกแบบและตัดต่อวิดีโอ</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">ข้อดี (Pros):</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li>สร้างสรรค์งานได้ระดับมืออาชีพ (Photoshop, Premiere)</li><li>เครื่องมือครบครัน ปรับแต่งได้ละเอียด</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">ข้อเสีย (Cons):</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li>ราคาสูง (Adobe CC จ่ายรายเดือน)</li><li>กินสเปคคอมพิวเตอร์สูง</li><li>ใช้งานยาก ต้องใช้เวลาเรียนรู้</li></ul>"}, 
+                en: {t:"Creative Tools", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">For design and video editing work.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Pros:</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li>Create professional level work (Photoshop, Premiere).</li><li>Complete tools, detailed customization.</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">Cons:</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li>High price (Adobe CC monthly pay).</li><li>High computer specs consumption.</li><li>Hard to use, requires learning time.</li></ul>"} 
+            },
+            utility: { 
+                th: {t:"Utilities (โปรแกรมสามัญ)", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">เครื่องมือดูแลและจัดการระบบ</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">ข้อดี (Pros):</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li>ช่วยให้คอมทำงานราบรื่น (Antivirus, CCleaner)</li><li>จัดการไฟล์บีบอัด (WinRAR)</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">ข้อเสีย (Cons):</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li>ถ้าโหลดมั่วอาจได้ของแถม (Bloatware/Adware)</li><li>บางโปรแกรมทำให้เครื่องช้าลงโดยไม่จำเป็น</li></ul>"}, 
+                en: {t:"Utilities", d:"<p class=\"mb-4 text-xl font-medium text-gray-800\">System care and management tools.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Pros:</h4><ul class=\"list-disc list-inside bg-green-50 p-4 rounded-xl border border-green-200 mb-4 text-sm text-gray-700\"><li>Helps computer run smooth (Antivirus, CCleaner).</li><li>Manage compressed files (WinRAR).</li></ul><h4 class=\"font-bold text-lg text-red-600 mb-2\">Cons:</h4><ul class=\"list-disc list-inside bg-red-50 p-4 rounded-xl border border-red-200 mb-4 text-sm text-gray-700\"><li>If downloaded randomly, might get extras (Bloatware/Adware).</li><li>Some programs slow down the machine unnecessarily.</li></ul>"} 
+            },
+            
+            prob1: { 
+                th: {
+                    t: "เปิดเครื่องไม่ติด (Computer Won't Turn On)", 
+                    d: `
+                        <h4 class="font-bold text-lg text-red-600 mb-2">อาการ:</h4>
+                        <p class="mb-4">กดปุ่ม Power แล้วเงียบสนิท ไม่มีไฟขึ้น พัดลมไม่หมุน หรือมีเสียงร้องเตือน</p>
+                        
+                        <h4 class="font-bold text-lg text-blue-800 mb-2">สาเหตุที่เป็นไปได้:</h4>
+                        <ul class="list-disc list-inside mb-4 text-gray-700">
+                            <li>ปลั๊กไฟหลวม หรือไม่ได้เปิดสวิตช์ PSU</li>
+                            <li>สายไฟภายในเครื่องหลวม</li>
+                            <li>RAM สกปรกหรือเสียบไม่แน่น</li>
+                            <li>Power Supply เสีย</li>
+                        </ul>
+
+                        <h4 class="font-bold text-lg text-green-700 mb-2">วิธีแก้ไขเบื้องต้น:</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <li><strong>เช็คไฟเข้า:</strong> ดูว่าปลั๊กเสียบแน่นไหม สวิตช์หลังเครื่อง (ถ้ามี) กดเปิดหรือยัง</li>
+                            <li><strong>เช็ค RAM:</strong> ลองถอดแรมออกมา เอายางลบดินสอถูเบาๆ ที่แถบทองเหลือง แล้วเสียบกลับให้แน่น (ดังแก๊ก)</li>
+                            <li><strong>ขยับสายไฟ:</strong> ลองขยับสายไฟเลี้ยงเมนบอร์ด (24-pin) และสายเลี้ยง CPU (4/8-pin)</li>
+                        </ol>
+                    `
+                }, 
+                en: {
+                    t: "Computer Won't Turn On", 
+                    d: `
+                        <h4 class="font-bold text-lg text-red-600 mb-2">Symptoms:</h4>
+                        <p class="mb-4">Press Power button and complete silence, no lights, fan not spinning, or beep codes.</p>
+                        
+                        <h4 class="font-bold text-lg text-blue-800 mb-2">Possible Causes:</h4>
+                        <ul class="list-disc list-inside mb-4 text-gray-700">
+                            <li>Loose power plug or PSU switch not on.</li>
+                            <li>Internal power cables loose.</li>
+                            <li>RAM dirty or not plugged in tight.</li>
+                            <li>Power Supply broken.</li>
+                        </ul>
+
+                        <h4 class="font-bold text-lg text-green-700 mb-2">Basic Fixes:</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <li><strong>Check Power Input:</strong> See if plug is tight, switch behind machine (if any) is on.</li>
+                            <li><strong>Check RAM:</strong> Try removing RAM, rub pencil eraser gently on gold contacts, then plug back in tight (click sound).</li>
+                            <li><strong>Wiggle Cables:</strong> Try wiggling mainboard power cable (24-pin) and CPU power cable (4/8-pin).</li>
+                        </ol>
+                    `
+                }
+            },
+            prob2: { 
+                th: {
+                    t: "เครื่องช้า/อืด (Slow Computer)", 
+                    d: `
+                        <h4 class="font-bold text-lg text-yellow-600 mb-2">อาการ:</h4>
+                        <p class="mb-4">เปิดโปรแกรมช้า บูทเครื่องนาน ทำงานแล้วค้างเป็นพักๆ</p>
+                        
+                        <h4 class="font-bold text-lg text-blue-800 mb-2">วิธีแก้ไขเบื้องต้น:</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <li><strong>Restart:</strong> วิธีง่ายสุดที่แก้ได้หลายปัญหา</li>
+                            <li><strong>ปิด Startup Apps:</strong> ไปที่ Task Manager > Startup แล้วปิดโปรแกรมที่ไม่จำเป็นต้องรันตอนเปิดเครื่อง</li>
+                            <li><strong>ลบไฟล์ขยะ:</strong> ใช้ Disk Cleanup ลบ Temporary Files</li>
+                            <li><strong>อัปเกรด:</strong> ถ้ายังใช้ HDD อยู่ แนะนำให้เปลี่ยนเป็น SSD จะเร็วขึ้นมาก</li>
+                        </ol>
+                    `
+                }, 
+                en: {
+                    t: "Slow/Laggy Computer", 
+                    d: `
+                        <h4 class="font-bold text-lg text-yellow-600 mb-2">Symptoms:</h4>
+                        <p class="mb-4">Opens programs slowly, long boot time, working then freezes periodically.</p>
+                        
+                        <h4 class="font-bold text-lg text-blue-800 mb-2">Basic Fixes:</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <li><strong>Restart:</strong> Easiest way that fixes many problems.</li>
+                            <li><strong>Close Startup Apps:</strong> Go to Task Manager > Startup and disable programs not needed at boot.</li>
+                            <li><strong>Delete Junk Files:</strong> Use Disk Cleanup to delete Temporary Files.</li>
+                            <li><strong>Upgrade:</strong> If still using HDD, recommend changing to SSD, will be much faster.</li>
+                        </ol>
+                    `
+                }
+            },
+            prob3: { th: { t: "จอฟ้า (BSOD)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">อาการ:</h4><p class=\"mb-4\">หน้าจอเป็นสีฟ้า มีข้อความ Error และเครื่องรีสตาร์ทเอง</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">วิธีแก้ไข:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>จดรหัส Error:</strong> เช่น 0x000... แล้วนำไปค้นหาใน Google เพื่อหาสาเหตุที่แน่ชัด</li><li><strong>เช็ค Driver:</strong> อัปเดตไดรเวอร์การ์ดจอและชิปเซ็ตให้ล่าสุด</li><li><strong>เช็ค Hardware:</strong> ลองถอดแรมมาทำความสะอาด หรือเช็ค Bad Sector ในฮาร์ดดิสก์</li></ol>" }, en: { t: "Blue Screen (BSOD)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Symptoms:</h4><p class=\"mb-4\">Screen turns blue, has Error message, and machine restarts itself.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Fixes:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Note Error Code:</strong> Like 0x000... then search in Google to find exact cause.</li><li><strong>Check Driver:</strong> Update graphics card and chipset drivers to latest.</li><li><strong>Check Hardware:</strong> Try removing RAM to clean, or check Bad Sector in hard disk.</li></ol>" } },
+            prob4: { th: { t: "ต่อเน็ตไม่ได้ (No Internet)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">อาการ:</h4><p class=\"mb-4\">ขึ้นเครื่องหมายตกใจสีเหลือง หรือรูปโลกไม่มีเน็ต</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">วิธีแก้ไข:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Restart Router:</strong> ถอดปลั๊กเร้าเตอร์ทิ้งไว้ 1 นาทีแล้วเสียบใหม่</li><li><strong>Troubleshoot:</strong> คลิกขวาที่ไอคอน Wifi เลือก Troubleshoot problems</li><li><strong>Forget Network:</strong> กดลบชื่อ Wifi เดิมออก แล้วใส่รหัสผ่านเชื่อมต่อใหม่</li></ol>" }, en: { t: "Cannot Connect Internet", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Symptoms:</h4><p class=\"mb-4\">Yellow exclamation mark appears or globe icon with no net.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">Fixes:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Restart Router:</strong> Unplug router for 1 minute then plug back in.</li><li><strong>Troubleshoot:</strong> Right click Wifi icon, select Troubleshoot problems.</li><li><strong>Forget Network:</strong> Delete old Wifi name, then enter password to connect again.</li></ol>" } },
+            prob5: { th: { t: "เสียงไม่ดัง (No Sound)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">วิธีเช็ค:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Mute:</strong> ดูว่าเผลอกดปิดเสียงใน Youtube หรือตัวเครื่องไหม</li><li><strong>Output Device:</strong> คลิกไอคอนลำโพงมุมขวาล่าง เลือกให้ถูกตัว (เช่น Headphones หรือ Speakers)</li><li><strong>Driver:</strong> ลองลง Driver เสียง (Realtek) ใหม่</li></ol>" }, en: { t: "No Sound", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Checklist:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Mute:</strong> Check if accidentally muted in Youtube or device.</li><li><strong>Output Device:</strong> Click speaker icon bottom right, choose correct one (e.g. Headphones or Speakers).</li><li><strong>Driver:</strong> Try reinstalling Audio Driver (Realtek).</li></ol>" } },
+            prob6: { th: { t: "โปรแกรมค้าง (Not Responding)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">วิธีปิดโปรแกรมดื้อ:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li>กดปุ่ม <strong>Ctrl + Alt + Delete</strong> บนคีย์บอร์ดพร้อมกัน</li><li>เลือกเมนู <strong>Task Manager</strong></li><li>คลิกขวาที่ชื่อโปรแกรมที่ค้าง แล้วเลือก <strong>End Task</strong></li></ol>" }, en: { t: "Program Freezes (Not Responding)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">How to close stubborn program:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li>Press <strong>Ctrl + Alt + Delete</strong> on keyboard together.</li><li>Select menu <strong>Task Manager</strong>.</li><li>Right click frozen program name, then select <strong>End Task</strong>.</li></ol>" } },
+            prob7: { th: { t: "เครื่องร้อน/พัดลมดัง (Overheating)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">สาเหตุและวิธีแก้:</h4><ul class=\"list-disc list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>ฝุ่น:</strong> ฝุ่นเข้าไปอุดตันพัดลมและฮีทซิงค์ ให้หาที่เป่าลมมาเป่าฝุ่นออก</li><li><strong>ซิลิโคนแห้ง:</strong> หากใช้มานาน 2-3 ปี ควรเปลี่ยนซิลิโคนระบายความร้อน CPU ใหม่</li><li><strong>ทางลม:</strong> อย่าตั้งเคสชิดกำแพงเกินไป ให้มีที่ระบายอากาศ</li></ul>" }, en: { t: "Overheating/Loud Fan", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Causes and Fixes:</h4><ul class=\"list-disc list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Dust:</strong> Dust clogging fans and heatsinks. Use blower to blow dust out.</li><li><strong>Dried Thermal Paste:</strong> If used for 2-3 years, should change CPU thermal paste.</li><li><strong>Airflow:</strong> Don't place case too close to wall, allow ventilation.</li></ul>" } },
+            prob8: { th: { t: "โดนไวรัส (Virus/Malware)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">อาการ:</h4><p class=\"mb-4\">เครื่องช้าผิดปกติ มีโฆษณาเด้งเอง ไฟล์งานถูกล็อค</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">วิธีจัดการ:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li>ตัดการเชื่อมต่ออินเทอร์เน็ตทันที</li><li>เปิด <strong>Windows Security</strong> (มาพร้อมเครื่อง)</li><li>เลือก <strong>Virus & threat protection</strong> > <strong>Scan options</strong> > <strong>Full scan</strong></li></ol>" }, en: { t: "Virus Infected (Virus/Malware)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Symptoms:</h4><p class=\"mb-4\">Machine unusually slow, ads popping up, files locked.</p><h4 class=\"font-bold text-lg text-green-700 mb-2\">How to handle:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li>Disconnect internet immediately.</li><li>Open <strong>Windows Security</strong> (comes with machine).</li><li>Select <strong>Virus & threat protection</strong> > <strong>Scan options</strong> > <strong>Full scan</strong>.</li></ol>" } },
+            prob9: { th: { t: "เครื่องพิมพ์ไม่ออก (Printer Error)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">เช็คเบื้องต้น:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li>สาย USB เสียบแน่นไหม / เปิดสวิตช์เครื่องพิมพ์หรือยัง</li><li>กระดาษติด หรือหมึกหมดไหม</li><li><strong>ลบคิวงาน:</strong> ไปที่ Settings > Devices > Printers > Open Queue แล้วลบรายการที่ค้างอยู่ออก (Cancel All Documents)</p>" }, en: { t: "Printer Not Printing (Printer Error)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Basic Check:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li>Is USB cable plugged tight / Printer switch on?</li><li>Paper jam or ink empty?</li><li><strong>Clear Queue:</strong> Go to Settings > Devices > Printers > Open Queue and delete stuck items (Cancel All Documents).</li></ol>" } },
+            prob10: { th: { t: "เมาส์/คีย์บอร์ด ไม่ขยับ", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">วิธีแก้ปัญหา:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>สลับช่อง:</strong> ลองย้ายไปเสียบช่อง USB อื่น (บางทีช่องเสียอาจพัง)</li><li><strong>เช็คถ่าน:</strong> ถ้าเป็นรุ่นไร้สาย ลองเปลี่ยนถ่านดู</li><li><strong>รีสตาร์ท:</strong> บางที Driver อาจจะเอ๋อ รีสตาร์ทเครื่องหาย</li></ol>" }, en: { t: "Mouse/Keyboard Not Moving", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Fixes:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Switch Port:</strong> Try plugging into another USB port (port might be broken).</li><li><strong>Check Battery:</strong> If wireless model, try changing battery.</li><li><strong>Restart:</strong> Sometimes Driver bugs out, restarting machine fixes it.</li></ol>" } },
+            prob11: { th: { t: "หน้าจอกระพริบ/ดับ", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">สาเหตุหลัก:</h4><ul class=\"list-disc list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>สายหลวม:</strong> ลองขยับสาย HDMI/DisplayPort หลังจอและหลังเคสให้แน่น</li><li><strong>สายเสีย:</strong> ลองหาสายเส้นอื่นมาเปลี่ยน</li><li><strong>Driver:</strong> อัปเดตไดรเวอร์การ์ดจอให้เป็นเวอร์ชันล่าสุด</li></ul>" }, en: { t: "Screen Flickering/Blacking Out", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Main Causes:</h4><ul class=\"list-disc list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Loose Cable:</strong> Try wiggling HDMI/DisplayPort cable behind screen and case tightly.</li><li><strong>Bad Cable:</strong> Try finding another cable to swap.</li><li><strong>Driver:</strong> Update graphics card driver to latest version.</li></ul>" } },
+            prob12: { th: { t: "เผลอลบไฟล์หาย (Lost File)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">วิธีกู้คืน:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>ตั้งสติ:</strong> อย่าเพิ่งเซฟไฟล์อะไรทับลงไป</li><li><strong>Recycle Bin:</strong> รีบไปดูในถังขยะบนหน้าจอ ถ้าเจอคลิกขวา > Restore</li><li><strong>โปรแกรมกู้:</strong> ถ้าลบถาวร (Shift+Del) ต้องใช้โปรแกรมเช่น Recuva ช่วยกู้ (แต่ไม่การันตี 100%)</li></ol>" }, en: { t: "Accidentally Deleted File (Lost File)", d: "<h4 class=\"font-bold text-lg text-blue-800 mb-2\">Recovery:</h4><ol class=\"list-decimal list-inside space-y-2 text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200\"><li><strong>Stay Calm:</strong> Don't save any files over it yet.</li><li><strong>Recycle Bin:</strong> Rush to check Recycle Bin on screen. If found right click > Restore.</li><li><strong>Recovery Program:</strong> If permanently deleted (Shift+Del), need program like Recuva to help recover (not guaranteed 100%).</li></ol>" } }
         };
 
         let currentLang = 'th';
+        let currentItemKey = '';
 
         function changeLanguage(lang) {
             currentLang = lang;
-            document.body.className = `text-slate-800 transition-colors duration-300 lang-${lang}`;
-            
-            // Update simple text elements
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) {
+                if (translations[lang] && translations[lang][key]) {
                     el.innerHTML = translations[lang][key];
                 }
             });
+            const detailSection = document.getElementById('detail-view');
+            if (detailSection.classList.contains('active')) {
+                const currentTitle = document.getElementById('detail-title').getAttribute('data-key');
+                if (currentTitle) showInfo(currentTitle, true);
+            }
         }
 
-        // --- NAVIGATION & LOGIC ---
         function navigateTo(pageId) {
-            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
             document.getElementById(pageId).classList.add('active');
             const menu = document.getElementById('mobile-menu');
-            const btn = document.getElementById('hamburger-btn');
-            
             if (!menu.classList.contains('hidden')) {
                 menu.classList.add('hidden');
-                btn.classList.remove('hamburger-active');
             }
             window.scrollTo(0, 0);
         }
 
         function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const btn = document.getElementById('hamburger-btn');
-            menu.classList.toggle('hidden');
-            btn.classList.toggle('hamburger-active');
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
         function filterItems(gridId, category) {
             const grid = document.getElementById(gridId);
             const items = grid.querySelectorAll('.item-card');
-            
-            // Update active button state
             const btnContainer = grid.previousElementSibling;
             btnContainer.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active', 'bg-blue-600', 'text-white', 'border-blue-600');
@@ -580,7 +995,6 @@
             });
             event.target.classList.remove('bg-white', 'text-gray-600', 'border-gray-300');
             event.target.classList.add('active', 'bg-blue-600', 'text-white', 'border-blue-600');
-
             items.forEach(item => {
                 if (category === 'all' || item.dataset.category === category) {
                     item.style.display = 'flex';
@@ -590,42 +1004,96 @@
             });
         }
 
-        function showInfo(type) {
-            const data = modalData[type] ? modalData[type][currentLang] : {t: "Info", d: "Content not available"};
+        function showInfo(type, isRefresh = false) {
+            currentItemKey = type;
+            const data = modalData[type] ? (modalData[type][currentLang] || modalData[type]['en']) : {t: "Info", d: "Content not available"};
+            const titleEl = document.getElementById('detail-title');
+            titleEl.innerHTML = data.t;
+            titleEl.setAttribute('data-key', type);
+            document.getElementById('detail-content').innerHTML = data.d;
             
-            document.getElementById('modal-title').textContent = data.t;
-            document.getElementById('modal-content').innerHTML = data.d;
-            
-            // Image mapping
             const imgMap = {
-                cpu: "https://placehold.co/600x400/e0f2fe/0369a1?text=CPU",
-                ram: "https://placehold.co/600x400/dcfce7/15803d?text=RAM",
-                storage: "https://placehold.co/600x400/ffedd5/c2410c?text=SSD",
-                mainboard: "https://placehold.co/600x400/f3e8ff/7e22ce?text=Mainboard",
-                windows: "https://placehold.co/600x400/2563eb/ffffff?text=Windows",
-                browser: "https://placehold.co/600x400/facc15/000000?text=Browser",
-                otg: "https://placehold.co/600x400/fce7f3/db2777?text=Using+OTG+Adapter",
-                datacable: "https://placehold.co/600x400/e2e8f0/475569?text=Using+Data+Cable"
+                cpu: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=800",
+                mainboard: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
+                gpu: "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800",
+                psu: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=800",
+                ram: "https://images.unsplash.com/photo-1562976540-1502c2145186?w=800",
+                storage: "https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=800",
+                monitor: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800",
+                mousekey: "https://images.unsplash.com/photo-1529236183275-4fdcf2bc987e?w=800",
+                windows: "https://msftstories.thesourcemediaassets.com/sites/460/2021/06/Windows-11_Hero-Bloom-Logo-1536x864.png",
+                linux: "https://i0.wp.com/saixiii.com/wp-content/uploads/2017/04/linux-banner.jpg?w=600&ssl=1",
+                macos: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
+                browser: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800",
+                office: "https://images.unsplash.com/photo-1542435503-956c469947f6?w=800",
+                creative: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=800",
+                utility: "https://images.unsplash.com/photo-1629654291663-ade3104a3071?w=800",
+                otg: "https://images.unsplash.com/photo-1623949556303-b0d17d198863?w=800",
+                datacable: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800",
+                step_input: "https://images.unsplash.com/photo-1529236183275-4fdcf2bc987e?w=800",
+                step_process: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=800",
+                step_storage: "https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=800",
+                step_output: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800",
+                prob1: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800",
+                prob2: "https://images.unsplash.com/photo-1504384308090-c54be3855833?w=800",
+                prob3: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800",
+                prob4: "https://images.unsplash.com/photo-1544197150-b99a580bbcbf?w=800",
+                prob5: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=800",
+                prob6: "https://images.unsplash.com/photo-1580894742597-87bc8789db3d?w=800",
+                prob7: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=800",
+                prob8: "https://images.unsplash.com/photo-1563206767-5b1d972f9fb6?w=800",
+                prob9: "https://images.unsplash.com/photo-1612815154858-60aa4c465a7e?w=800",
+                prob10: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800",
+                prob11: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800",
+                prob12: "https://images.unsplash.com/photo-1533022136019-8694844591e3?w=800"
             };
 
-            const modalImg = document.getElementById('modal-image');
-            if (imgMap[type]) {
-                modalImg.src = imgMap[type];
-                modalImg.classList.remove('hidden');
+            const detailImg = document.getElementById('detail-image');
+            const detailImgContainer = document.getElementById('detail-image-container');
+
+            if (type.startsWith('prob')) {
+                 detailImgContainer.style.display = 'none';
             } else {
-                modalImg.classList.add('hidden');
+                 detailImgContainer.style.display = 'block';
+                 detailImg.src = imgMap[type] || 'https://placehold.co/800x400?text=ComBasics';
+            }
+            
+            if(!isRefresh) navigateTo('detail-view');
+        }
+
+        const navigationGroups = [
+            ['step_input', 'step_process', 'step_storage', 'step_output'],
+            ['cpu', 'mainboard', 'gpu', 'psu', 'ram', 'storage', 'monitor', 'mousekey', 'otg', 'datacable'],
+            ['windows', 'linux', 'macos', 'browser', 'office', 'creative', 'utility'],
+            ['prob1', 'prob2', 'prob3', 'prob4', 'prob5', 'prob6', 'prob7', 'prob8', 'prob9', 'prob10', 'prob11', 'prob12']
+        ];
+
+        function goNext() {
+            let groupIndex = -1;
+            let itemIndex = -1;
+
+            for(let i = 0; i < navigationGroups.length; i++) {
+                const idx = navigationGroups[i].indexOf(currentItemKey);
+                if(idx !== -1) {
+                    groupIndex = i;
+                    itemIndex = idx;
+                    break;
+                }
             }
 
-            document.getElementById('info-modal').classList.remove('hidden');
+            if(groupIndex !== -1) {
+                let nextIndex = itemIndex + 1;
+                if(nextIndex >= navigationGroups[groupIndex].length) {
+                    nextIndex = 0;
+                }
+                const nextKey = navigationGroups[groupIndex][nextIndex];
+                showInfo(nextKey);
+            }
         }
 
-        function closeModal() {
-            document.getElementById('info-modal').classList.add('hidden');
+        function goBack() {
+            navigateTo('home');
         }
-
-        document.getElementById('info-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
     </script>
 </body>
 </html>
